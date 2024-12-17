@@ -2,14 +2,29 @@ import React from "react";
 import ProductCard from "./ProductCard";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
+import FilterComponents from "./FilterComponents";
 
-export default function ProductCategory() {
+type productDetailsProps = {
+  productDetails: {
+    title: string;
+    description: string;
+    price: number;
+    images: string[];
+    size?: number;
+    rating: number;
+    likes?: number;
+  }[];
+};
+
+export default function ProductCategory({
+  productDetails,
+}: productDetailsProps) {
   //states
   const [currentSelected, setCurrentSelected] = React.useState<null | number>(
     null
   );
 
-  //contants
+  //constants
   const topFilters = [
     {
       name: "Age",
@@ -47,7 +62,36 @@ export default function ProductCategory() {
               Filter
             </p>
             {/* left section bottom */}
-            <div className="filtersWrapper border-t border-r flex-[9.5]"></div>
+            <div className="filtersWrapper border-t border-r flex-[9.5]">
+              {/* filtercomponents */}
+              <FilterComponents
+                title={"Categories"}
+                filterValues={[
+                  {
+                    filterName: "T-shirts",
+                    count: 100,
+                  },
+                  {
+                    filterName: "Shirts",
+                    count: 100,
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                  },
+                ]}
+                isMultiSelect={true}
+                isSearchable={true}
+              />
+            </div>
           </div>
 
           {/* right section */}
@@ -127,15 +171,31 @@ export default function ProductCategory() {
             )}
 
             {/* right section bottom */}
-            <div className="cardsWrapper flex-[9.5] w-full p-5 flex border-t border-l">
-              <ProductCard
-                title={"H&M"}
-                description={"Boys Teddy Hoody"}
-                price={1999}
-                images={["/product1.png", "/product2.png"]}
-                rating={4.5}
-                likes={4.4}
-              />
+            <div className="cardsWrapper flex-[9.5] w-full gap-5 p-5 flex border-t border-l">
+              {/* map the product productDetails */}
+              {productDetails.map((product, index) => {
+                return (
+                  <ProductCard
+                    key={index}
+                    title={product.title}
+                    description={product.description}
+                    price={product.price}
+                    images={product.images}
+                    size={product.size}
+                    rating={product.rating}
+                    likes={product.likes}
+                  />
+                );
+              })}
+
+              {/* <ProductCard */}
+              {/* //   title={"H&M"}
+              //   description={"Boys Teddy Hoody"}
+              //   price={1999}
+              //   images={["/product1.png", "/product2.png"]}
+              //   rating={4.5}
+              //   likes={4.4}
+              // /> */}
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import Men from "./Components/Men";
 import WoMen from "./Components/WoMen";
 import Living from "./Components/Living";
 import Kids from "./Components/Kids";
+import ProductCategoryWraper from "./Components/ProductCategoryWraper";
 
 import ProtectedRouter from "./Components/ProtectedRouter";
 import { Auth0Provider } from "@auth0/auth0-react";
@@ -53,7 +54,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/Category/:name",
-        element: <ProductCategory />,
+        element: <ProductCategoryWraper />,
       },
     ],
   },

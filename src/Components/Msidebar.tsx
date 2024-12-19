@@ -2,8 +2,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoClose } from "react-icons/io5";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { setMenuButtonClicked } from "../Redux/navBarSlice";
+
 import { Link } from "react-router-dom";
+import { setMenuButtonClicked } from "../Redux/navBarSlice";
 
 export default function Msidebar() {
   const isMenuBarOpen = useSelector(

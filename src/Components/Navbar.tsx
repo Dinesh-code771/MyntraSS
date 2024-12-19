@@ -5,11 +5,12 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { setMenuButtonClicked } from "../Redux/navBarSlice";
+
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import { useAuth0 } from "@auth0/auth0-react";
+import { setMenuButtonClicked } from "../Redux/navBarSlice";
 
 export default function Navbar() {
   // const [isBurgerMenuOpen, setIsBurgerMenuOpen]=React.useState(false);

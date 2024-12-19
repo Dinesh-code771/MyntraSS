@@ -3,6 +3,8 @@ import ProductCard from "./ProductCard";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import FilterComponents from "./FilterComponents";
+import { useSelector } from "react-redux";
+import { RxCross1 } from "react-icons/rx";
 
 type productDetailsProps = {
   productDetails: {
@@ -23,6 +25,28 @@ export default function ProductCategory({
   const [currentSelected, setCurrentSelected] = React.useState<null | number>(
     null
   );
+
+  const allFilterState = useSelector((state: any) => state.filterSlice);
+  console.log(allFilterState, "allfilterState");
+
+  let allFilterStateValues = [];
+  for (let key in allFilterState) {
+    allFilterStateValues.push(allFilterState[key]);
+  }
+
+  let flatedValues = allFilterStateValues.flatMap((value, index) => {
+    return value;
+  });
+
+  console.log(flatedValues, "fd");
+
+  // console.log(allFilterStateValues, "allFilterStateValues");
+  // console.log(
+  //   allFilterStateValues.flatMap((value, index) => {
+  //     return value;
+  //   }),
+  //   "allFilterStateValues"
+  // );
 
   //constants
   const topFilters = [
@@ -90,6 +114,79 @@ export default function ProductCategory({
                 ]}
                 isMultiSelect={true}
                 isSearchable={true}
+              />
+
+              <FilterComponents
+                title={"Brand"}
+                filterValues={[
+                  {
+                    filterName: "Puma",
+                    count: 100,
+                  },
+                  {
+                    filterName: "Nike",
+                    count: 100,
+                  },
+                  {
+                    filterName: "Adidas",
+                    count: 100,
+                  },
+                  {
+                    filterName: "Reebok",
+                    count: 100,
+                  },
+                  {
+                    filterName: "Levis",
+                    count: 100,
+                  },
+                ]}
+                isMultiSelect={true}
+                isSearchable={true}
+              />
+              <FilterComponents
+                title={"Colors"}
+                filterValues={[
+                  {
+                    filterName: "Red",
+                  },
+                  {
+                    filterName: "Blue",
+                  },
+                  {
+                    filterName: "Green",
+                  },
+                  {
+                    filterName: "yellow",
+                  },
+                  {
+                    filterName: "purple",
+                  },
+                ]}
+                isMultiSelect={true}
+                isSearchable={true}
+              />
+
+              <FilterComponents
+                title={"Discount"}
+                filterValues={[
+                  {
+                    filterName: "0-10",
+                  },
+                  {
+                    filterName: "10-20",
+                  },
+                  {
+                    filterName: "20-30",
+                  },
+                  {
+                    filterName: "30-40",
+                  },
+                  {
+                    filterName: "40-50",
+                  },
+                ]}
+                isMultiSelect={false}
+                isSearchable={false}
               />
             </div>
           </div>
@@ -169,6 +266,18 @@ export default function ProductCategory({
                 })}
               </div>
             )}
+
+            {/* selected Filters */}
+            <div className="selectedFilter flex flex-wrap gap-3 px-2">
+              {flatedValues.map((value, index) => {
+                return (
+                  <div className=" flex gap-1 py-1 px-1 max-w-[500px] min-w-[100px] rounded-xl items-center justify-between border text-[#3e4152]">
+                    <p className="text-[0.7rem]">{value.filterName}</p>
+                    <RxCross1 size={15} color="#3e4152" />
+                  </div>
+                );
+              })}
+            </div>
 
             {/* right section bottom */}
             <div className="cardsWrapper flex-[9.5] w-full gap-5 p-5 flex border-t border-l">

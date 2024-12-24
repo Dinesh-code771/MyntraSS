@@ -5,7 +5,7 @@ const initialState = {
   Brand: [],
   Colors: [],
   Discount: [],
-  
+
 };
 
 export const FilterSlice = createSlice({
@@ -23,12 +23,19 @@ export const FilterSlice = createSlice({
       state.Colors = [];
       state.Discount = [];
     },
+    removeParticularFilter:(state,action)=>{
+      const type=action.payload.type;
+      const value=action.payload.value;
+      console.log(type,value);
+      state[type]= state[type]?.filter((item)=>item.filterName!==value)
+    }
   },
 });
 
 //action created by createSlice
 
-export const { setFilterValues, resetFilterValues } = FilterSlice.actions;
+export const { setFilterValues, resetFilterValues, removeParticularFilter } = FilterSlice.actions;
 
 export default FilterSlice.reducer;
+
 

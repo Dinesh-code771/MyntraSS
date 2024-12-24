@@ -3,8 +3,9 @@ import ProductCard from "./ProductCard";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import FilterComponents from "./FilterComponents";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RxCross1 } from "react-icons/rx";
+import { removeParticularFilter } from "../Redux/FilterSlice";
 
 type productDetailsProps = {
   productDetails: {
@@ -26,19 +27,28 @@ export default function ProductCategory({
     null
   );
 
+  const dispatch = useDispatch();
+
   const allFilterState = useSelector((state: any) => state.filterSlice);
   console.log(allFilterState, "allfilterState");
 
-  let allFilterStateValues = [];
+  let allFilterStateValues: any[] = [];
   for (let key in allFilterState) {
-    allFilterStateValues.push(allFilterState[key]);
+    //key=Brand
+    if (allFilterState[key]?.length > 0) {
+      allFilterStateValues = [...allFilterStateValues, ...allFilterState[key]];
+    }
+
+    // allFilterStateValues = [...allFilterStateValues, ...allFilterState[key]];
+    // allFilterStateValues.push(allFilterState[key]);
   }
+  console.log(allFilterStateValues);
 
-  let flatedValues = allFilterStateValues.flatMap((value, index) => {
-    return value;
-  });
+  // let flatedValues = allFilterStateValues.flatMap((value, index) => {
+  //   return value;
+  // });
 
-  console.log(flatedValues, "fd");
+  // console.log(allFilterStateValues, "fd");
 
   // console.log(allFilterStateValues, "allFilterStateValues");
   // console.log(
@@ -58,6 +68,21 @@ export default function ProductCategory({
     { name: "Country of origin", values: ["Red", "Blue", "Green"] },
     { name: "Size", values: ["S", "M", "L", "XL"] },
   ];
+
+  function handleRemoveFilter(filterDetails: {
+    filterName: string;
+    count?: number;
+
+    type: string;
+  }) {
+    console.log(filterDetails);
+    dispatch(
+      removeParticularFilter({
+        type: filterDetails.type,
+        value: filterDetails.filterName,
+      })
+    );
+  }
   return (
     <div className="wrapper h-[88%]">
       <div className="w-[80%]  h-full mx-auto py-5 flex flex-col gap-4">
@@ -90,26 +115,32 @@ export default function ProductCategory({
               {/* filtercomponents */}
               <FilterComponents
                 title={"Categories"}
+                componentType={"Categories"}
                 filterValues={[
                   {
                     filterName: "T-shirts",
                     count: 100,
+                    type: "Categories",
                   },
                   {
                     filterName: "Shirts",
                     count: 100,
+                    type: "Categories",
                   },
                   {
                     filterName: "Trousers",
                     count: 100,
+                    type: "Categories",
                   },
                   {
                     filterName: "Shorts",
                     count: 100,
+                    type: "Categories",
                   },
                   {
                     filterName: "Dresses",
                     count: 100,
+                    type: "Categories",
                   },
                 ]}
                 isMultiSelect={true}
@@ -118,26 +149,32 @@ export default function ProductCategory({
 
               <FilterComponents
                 title={"Brand"}
+                componentType={"Brand"}
                 filterValues={[
                   {
                     filterName: "Puma",
                     count: 100,
+                    type: "Brand",
                   },
                   {
                     filterName: "Nike",
                     count: 100,
+                    type: "Brand",
                   },
                   {
                     filterName: "Adidas",
                     count: 100,
+                    type: "Brand",
                   },
                   {
                     filterName: "Reebok",
                     count: 100,
+                    type: "Brand",
                   },
                   {
                     filterName: "Levis",
                     count: 100,
+                    type: "Brand",
                   },
                 ]}
                 isMultiSelect={true}
@@ -145,21 +182,27 @@ export default function ProductCategory({
               />
               <FilterComponents
                 title={"Colors"}
+                componentType={"Colors"}
                 filterValues={[
                   {
                     filterName: "Red",
+                    type: "Colors",
                   },
                   {
                     filterName: "Blue",
+                    type: "Colors",
                   },
                   {
                     filterName: "Green",
+                    type: "Colors",
                   },
                   {
                     filterName: "yellow",
+                    type: "Colors",
                   },
                   {
                     filterName: "purple",
+                    type: "Colors",
                   },
                 ]}
                 isMultiSelect={true}
@@ -168,21 +211,27 @@ export default function ProductCategory({
 
               <FilterComponents
                 title={"Discount"}
+                componentType={"Discount"}
                 filterValues={[
                   {
                     filterName: "0-10",
+                    type: "Discount",
                   },
                   {
                     filterName: "10-20",
+                    type: "Discount",
                   },
                   {
                     filterName: "20-30",
+                    type: "Discount",
                   },
                   {
                     filterName: "30-40",
+                    type: "Discount",
                   },
                   {
                     filterName: "40-50",
+                    type: "Discount",
                   },
                 ]}
                 isMultiSelect={false}
@@ -194,7 +243,7 @@ export default function ProductCategory({
           {/* right section */}
           <div className="rightWrapper flex-[8]  flex flex-col gap-[11px]">
             {/* right section top */}
-            <div className="flex flex-[0.5] justify-between ">
+            <div className="flex  justify-between ">
               <div className="flex flex-[4] justify-between items-center ">
                 <div className="flex justify-between">
                   <div className="flex flex-[3] justify-between items-center ">
@@ -269,18 +318,24 @@ export default function ProductCategory({
 
             {/* selected Filters */}
             <div className="selectedFilter flex flex-wrap gap-3 px-2">
-              {flatedValues.map((value, index) => {
+              {allFilterStateValues.map((value: any) => {
                 return (
                   <div className=" flex gap-1 py-1 px-1 max-w-[500px] min-w-[100px] rounded-xl items-center justify-between border text-[#3e4152]">
-                    <p className="text-[0.7rem]">{value.filterName}</p>
-                    <RxCross1 size={15} color="#3e4152" />
+                    <p className="text-[0.7rem]">{value?.filterName}</p>
+                    <RxCross1
+                      onClick={() => {
+                        handleRemoveFilter(value);
+                      }}
+                      size={15}
+                      color="#3e4152"
+                    />
                   </div>
                 );
               })}
             </div>
 
             {/* right section bottom */}
-            <div className="cardsWrapper flex-[9.5] w-full gap-5 p-5 flex border-t border-l">
+            <div className="cardsWrapper  w-full md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 p-5 flex border-t border-l">
               {/* map the product productDetails */}
               {productDetails.map((product, index) => {
                 return (

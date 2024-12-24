@@ -31,16 +31,22 @@ export default function ProductCard({
     }
     return () => clearInterval(interval);
   }, [isHovered]);
+
+  useEffect(() => {
+    console.log(current, "curd");
+  }, [current]);
+
   return (
     <div
       onClick={() => setIsHovered(!isHovered)}
       onMouseLeave={() => {
         setIsHovered(false);
+        setCurrent(0);
       }}
       className=" hover:shadow-lg "
     >
       <div
-        className={`w-[200px] relative h-auto  cursor-pointer ${isHovered ? "h-[200px]" : ""} transition-ease-in-out`}
+        className={`w-full relative h-auto  cursor-pointer ${isHovered ? "h-[200px]" : ""} transition-ease-in-out`}
       >
         <img
           src={images[current]}

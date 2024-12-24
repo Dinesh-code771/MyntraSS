@@ -9,11 +9,13 @@ export default function FilterComponents({
   filterValues,
   isMultiSelect = false,
   isSearchable = false,
+  componentType,
 }: {
   title: string;
-  filterValues: { filterName: string; count?: number }[];
+  filterValues: { filterName: string; count?: number; type: string }[];
   isMultiSelect?: boolean;
   isSearchable?: boolean;
+  componentType: string;
 }) {
   // const [storeSelectedValues, setStoreSelectedValues] = React.useState<
   //   { filterName: string; count?: number }[]
@@ -24,7 +26,7 @@ export default function FilterComponents({
   //this below line of code is used to get values from redux
 
   const storedValues =
-    useSelector((state: any) => state.filterSlice[title]) || [];
+    useSelector((state: any) => state.filterSlice[componentType]) || [];
   // console.log(storedValues, "FilterState");
 
   //for filtersearch
@@ -35,7 +37,9 @@ export default function FilterComponents({
 
   //myfilterValues are 6 values(tshirts,shirts,...)
   const [myFilterValues, setMyFilterValues] =
-    React.useState<{ filterName: string; count?: number }[]>(filterValues);
+    React.useState<{ filterName: string; count?: number; type: string }[]>(
+      filterValues
+    );
 
   useEffect(() => {
     //post selected values to the server. i.e, wev are sending values to server to save
@@ -44,15 +48,22 @@ export default function FilterComponents({
   //fetch data from the server and give it to storeSelectedValues
   useEffect(() => {
     //placing static data
-    const dataFromServer = [{ filterName: "Dresses", count: 100 }];
+    const dataFromServer = [
+      { filterName: "Dresses", count: 100, type: "Categories" },
+    ];
     // setStoreSelectedValues(dataFromServer);
-    dispatch(setFilterValues({ title: title, values: dataFromServer }));
+    dispatch(
+      setFilterValues({
+        title: componentType,
+        values: dataFromServer,
+      })
+    );
   }, []);
 
   //for searching values in searchbar
   useEffect(() => {
-    let filteredValues = filterValues.filter((item) => {
-      return item.filterName.toLowerCase().includes(searchValue.toLowerCase());
+    let filteredValues = filterValues?.filter((item) => {
+      return item?.filterName.toLowerCase().includes(searchValue.toLowerCase());
     });
     setMyFilterValues(filteredValues);
     //products you search will be stored in setmyfiltervalues
@@ -62,7 +73,8 @@ export default function FilterComponents({
 
   function handleClick(
     e: React.MouseEvent<HTMLInputElement>,
-    count: number | undefined
+    count: number | undefined,
+    type: string
   ) {
     if (isMultiSelect) {
       if (e.currentTarget.checked) {
@@ -73,10 +85,14 @@ export default function FilterComponents({
         // ]); //store values
         dispatch(
           setFilterValues({
-            title: title,
+            title: componentType,
             values: [
               ...storedValues,
-              { filterName: e.currentTarget.value, count: count ? count : 0 },
+              {
+                filterName: e.currentTarget.value,
+                count: count ? count : 0,
+                type: type,
+              },
             ],
           })
         );
@@ -89,9 +105,9 @@ export default function FilterComponents({
         // );
         dispatch(
           setFilterValues({
-            title: title,
-            values: storedValues.filter(
-              (item: any) => item.filterName !== e.currentTarget.value
+            title: componentType,
+            values: storedValues?.filter(
+              (item: any) => item?.filterName !== e.currentTarget.value
             ),
           })
         );
@@ -102,9 +118,13 @@ export default function FilterComponents({
       // ]);
       dispatch(
         setFilterValues({
-          title: title,
+          title: componentType,
           values: [
-            { filterName: e.currentTarget.value, count: count ? count : 0 },
+            {
+              filterName: e.currentTarget.value,
+              count: count ? count : 0,
+              type: type,
+            },
           ],
         })
       );
@@ -163,16 +183,16 @@ export default function FilterComponents({
               >
                 <input
                   className="accent-pink-500 cursor-pointer"
-                  onClick={(e) => handleClick(e, filter.count)}
+                  onClick={(e) => handleClick(e, filter.count, filter.type)}
                   type={isMultiSelect ? "checkbox" : "radio"}
-                  value={filter.filterName}
+                  value={filter?.filterName}
                   checked={storedValues
-                    .map((item: any) => item.filterName)
-                    .includes(filter.filterName)}
+                    .map((item: any) => item?.filterName)
+                    .includes(filter?.filterName)}
                 />
 
                 <p className="flex gap-2">
-                  {filter.filterName}
+                  {filter?.filterName}
                   {filter.count && (
                     <span className="text-[0.5rem] text-[#94969f] font-bold">
                       {`(${filter.count})`}

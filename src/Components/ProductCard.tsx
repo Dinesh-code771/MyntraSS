@@ -71,7 +71,7 @@ export default function ProductCard({
                     e.stopPropagation();
                     setCurrent(index);
                   }}
-                  className={`w-[6px] h-[6px] rounded-full bg-slate-300 ${current === index ? "bg-pink-400" : "bg-slate-300"}`}
+                  className={`w-[6px] h-[6px] rounded-full  ${current === index ? "bg-pink-400" : "bg-slate-300"}`}
                 ></div>
               );
             })}

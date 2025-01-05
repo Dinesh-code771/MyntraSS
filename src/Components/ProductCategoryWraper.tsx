@@ -1,7 +1,13 @@
 import React from "react";
 import ProductCategory from "./ProductCategory";
-
+import { useEffect } from "react";
 export default function ProductCategoryWraper() {
+  //useEffect to scroll to top
+  useEffect(() => {
+    console.log("scrolling to top");
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <ProductCategory

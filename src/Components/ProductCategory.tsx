@@ -5,7 +5,15 @@ import { IoIosArrowUp } from "react-icons/io";
 import FilterComponents from "./FilterComponents";
 import { useDispatch, useSelector } from "react-redux";
 import { RxCross1 } from "react-icons/rx";
-import { removeParticularFilter } from "../Redux/FilterSlice";
+import {
+  removeParticularFilter,
+  resetFilterValues,
+  setPrice,
+} from "../Redux/FilterSlice";
+import Slider from "@mui/material/Slider";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import DropDown from "./DropDown";
+import { useEffect } from "react";
 
 type productDetailsProps = {
   productDetails: {
@@ -29,6 +37,8 @@ export default function ProductCategory({
 
   const dispatch = useDispatch();
 
+  const [values, setValues] = React.useState<number[]>([0, 10000]);
+
   const allFilterState = useSelector((state: any) => state.filterSlice);
   console.log(allFilterState, "allfilterState");
 
@@ -42,7 +52,6 @@ export default function ProductCategory({
     // allFilterStateValues = [...allFilterStateValues, ...allFilterState[key]];
     // allFilterStateValues.push(allFilterState[key]);
   }
-  console.log(allFilterStateValues);
 
   // let flatedValues = allFilterStateValues.flatMap((value, index) => {
   //   return value;
@@ -83,6 +92,42 @@ export default function ProductCategory({
       })
     );
   }
+
+  //for adding color to slider
+  const darkPinkTheme = createTheme({
+    components: {
+      MuiSlider: {
+        styleOverrides: {
+          root: {
+            color: "#ec407a",
+          },
+          thumb: {
+            borderColor: "#F76789",
+          },
+          rail: {
+            color: "#f5c1d6",
+          },
+        },
+      },
+    },
+  });
+
+  function handleSliderChange(event: Event, newValue: number | number[]) {
+    if (Array.isArray(newValue)) {
+      //checks if newValue is an array to avoid runtime
+
+      setValues([newValue[0], newValue[1]]);
+      //@ts-ignore
+      dispatch(setPrice([newValue[0], newValue[1]]));
+    }
+  }
+
+  //for getting values as 1,00 in slider
+  const formattedValue = new Intl.NumberFormat("en-IN", {}).format(1000); //Replace 1000 with your dynamic value
+
+  function handleClearAll() {
+    dispatch(resetFilterValues());
+  }
   return (
     <div className="wrapper h-[88%]">
       <div className="w-[80%]  h-full mx-auto py-5 flex flex-col gap-4">
@@ -107,12 +152,40 @@ export default function ProductCategory({
           {/* left section */}
           <div className="leftWrapper flex-[2] flex flex-col">
             {/* left section top */}
-            <p className="text-md font-bold text-black p-3 flex-[0.5] ">
-              Filter
-            </p>
+            <div className="flex justify-between items-center ">
+              <p className="text-sm font-bold uppercase text-black p-3 flex-[0.5] ">
+                Filters
+              </p>
+
+              {allFilterStateValues.length > 0 && (
+                <p
+                  onClick={handleClearAll}
+                  className="text-xs cursor-pointer  text-[#ff3f6c] pr-5 uppercase font-bold"
+                >
+                  Clear All
+                </p>
+              )}
+            </div>
             {/* left section bottom */}
             <div className="filtersWrapper border-t border-r flex-[9.5]">
               {/* filtercomponents */}
+              <FilterComponents
+                title={""}
+                componentType={"Gender"}
+                filterValues={[
+                  {
+                    filterName: "Boys",
+                    type: "Discount",
+                  },
+                  {
+                    filterName: "Girls",
+                    type: "Discount",
+                  },
+                ]}
+                isMultiSelect={false}
+                isSearchable={false}
+              />
+
               <FilterComponents
                 title={"Categories"}
                 componentType={"Categories"}
@@ -128,6 +201,231 @@ export default function ProductCategory({
                     type: "Categories",
                   },
                   {
+                    filterName: "Yoga Mats",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Accessories",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Perfume",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Organisers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shirts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Perfume",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Wall Decor",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Accessories",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Perfume",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Organisers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shirts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Nail Art and Nail Care",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Wall Decor",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Accessories",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Nail Art and Nail Care",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Organisers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shirts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Nail Art and Nail Care",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Wall Decor",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Accessories",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Yoga Mats",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Wall Decor",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Accessories",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Accessories",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Accessories",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Nightdress",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "kurta",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Nightdress",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "kurta",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Nightdress",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "kurta",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "kurta",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "kurta",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
                     filterName: "Trousers",
                     count: 100,
                     type: "Categories",
@@ -139,6 +437,292 @@ export default function ProductCategory({
                   },
                   {
                     filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Trousers",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Baby Pillow",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Baby Pillow",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Baby Pillow",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Baby Pillow",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Yoga Mats",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Yoga Mats",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "pyjamas",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "pyjamas",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "pyjamas",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "jeans",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "jeans",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "jeans",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "pyjamas",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Yoga Mats",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Yoga Mats",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Dresses",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Yoga Mats",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+
+                  {
+                    filterName: "kurta",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Massage Oils",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "kurta",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Massage Oils",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Leggings",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "kurta",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Massage Oils",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "Shorts",
+                    count: 100,
+                    type: "Categories",
+                  },
+                  {
+                    filterName: "kurta",
                     count: 100,
                     type: "Categories",
                   },
@@ -180,6 +764,39 @@ export default function ProductCategory({
                 isMultiSelect={true}
                 isSearchable={true}
               />
+
+              {/* price Slide */}
+              <div className="px-3 border-t py-4">
+                <h3 className="font-bold text-xs text-[#282c3e] uppercase">
+                  Price
+                </h3>
+
+                <ThemeProvider theme={darkPinkTheme}>
+                  <Slider
+                    getAriaLabel={() => "Timeline range"}
+                    value={values}
+                    min={0}
+                    max={100000}
+                    step={100}
+                    size="small"
+                    onChange={handleSliderChange}
+                  />
+                </ThemeProvider>
+
+                <div className="flex justify-between text-xs text-black">
+                  <span className="font-bold">{"\u20B9"}</span>
+                  <p className="font-bold pr-1">
+                    {new Intl.NumberFormat("en-IN").format(values[0])}
+                  </p>
+                  <span className="font-bold"> - </span>
+                  <span className="font-bold">{"\u20B9"}</span>
+                  <p className="font-bold pr-1">
+                    {new Intl.NumberFormat("en-IN").format(values[1])}
+                  </p>
+                  <span className="font-bold"> + </span>
+                </div>
+              </div>
+
               <FilterComponents
                 title={"Colors"}
                 componentType={"Colors"}
@@ -210,7 +827,7 @@ export default function ProductCategory({
               />
 
               <FilterComponents
-                title={"Discount"}
+                title={"Discount Range"}
                 componentType={"Discount"}
                 filterValues={[
                   {
@@ -276,29 +893,51 @@ export default function ProductCategory({
                   </div>
                 </div>
 
-                <div className="flex justify-between">
-                  <div className="flex flex-[3] justify-between ">
-                    <div className="flex-[6] items-end">
-                      <div className="flex gap-3 justify-end ">
+                {/* <div className="flex justify-between">
+                  <div className="flex flex-[3] justify-between "> */}
+                <div className="flex justify-end gap-3 relative">
+                  <DropDown
+                    title="Sort By"
+                    values={[
+                      { id: "352623", name: "Recommeded" },
+                      {
+                        id: "352625",
+                        name: "Popularity",
+                      },
+                      {
+                        id: "352624",
+                        name: "Newest",
+                      },
+                      {
+                        id: "352626",
+                        name: "Price: Low to High",
+                      },
+                      {
+                        id: "352627",
+                        name: "Price: High to Low",
+                      },
+                    ]}
+                  />
+                  {/* <div className="flex gap-3 justify-end ">
                         <div className="wrapper border-[#d1d1d1] border flex items-center px-3">
                           <div>
                             <p className="text-[#8b8d95] text-sm">Sort By:</p>
                           </div>
 
                           <div>
-                            <select className="  p-2 focus:outline-none text-sm rounded-lg">
+                            <select className="p-2 focus:outline-none text-sm rounded-lg">
                               <option value="newest">Recommended</option>
                               <option value="oldest">oldest</option>
                               <option value="price">price</option>
                             </select>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
+                      </div> */}
                 </div>
               </div>
             </div>
+            {/* </div>
+            </div> */}
 
             {/* right section middle*/}
             {currentSelected != null && (
@@ -306,8 +945,8 @@ export default function ProductCategory({
                 {topFilters[currentSelected].values.map((value, index) => {
                   return (
                     <div key={index} className="flex gap-[0.5] items-center">
-                      <input type="checkbox" />
-                      <p className="text-[#8b8d95] cursor-pointer text-sm">
+                      <input className="accent-pink-500" type="checkbox" />
+                      <p className="text-[#8b8d95] cursor-pointer text-sm rounded-lg px-2">
                         {value}
                       </p>
                     </div>

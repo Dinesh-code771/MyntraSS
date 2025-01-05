@@ -6,6 +6,7 @@ import { setMenuButtonClicked } from '../Redux/navBarSlice';
 import { Link } from 'react-router-dom';
 
 export default function MVSideBar() {
+  
   const isMenuBarOpen = useSelector(
     (state: any) => state.navBarSlice.isMenuButtonClicked
   );

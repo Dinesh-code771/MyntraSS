@@ -30,9 +30,8 @@ export default function HomeSection() {
               ]
             : [
                 {src: "phoneBanner.png",alt:""},
-                { src: 'Myntra1.jpg', alt: '' },
-                { src: 'Myntra2.jpg', alt: '' },
-                { src: 'Myntra4.jpg', alt: '' },
+                { src: 'myntraPhoneBanner.png', alt: '' },
+                { src: 'myntraPhoneBanner6.png', alt: '' },
               ]
         }
       />

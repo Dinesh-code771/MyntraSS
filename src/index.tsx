@@ -17,6 +17,7 @@ import HomeSection from "./components/HomeSection"
 import ProtectRouter from './components/ProtectRouter'
 import Login from './components/Login';
 import ProductCategory from './components/ProductCategory';
+import ProductCategoryWrapper from './components/ProductCategoryWrapper';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
        },
        {
         path: "/category/:name",
-        element:<ProductCategory/>,
+        element:<ProductCategoryWrapper/>,
        },
      ],
   },

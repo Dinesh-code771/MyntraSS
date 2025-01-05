@@ -17,7 +17,7 @@ export default function Banners({
   });
 
   return (
-    <div className="container  flex flex-col  gap-3">
+    <div className="flex flex-col  gap-3">
       <div className="flex overflow-x-auto w-screen  ">
         {/*banner*/}
         <div className="imgWrapper flex flex-1 justify-center items-center ">

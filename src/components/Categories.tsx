@@ -1,6 +1,7 @@
 import React from 'react'
 import CategoryCard from './CategoryCard'
 
+//cards in sm:(phone)
 export default function Categories() {
 
     let categories = [

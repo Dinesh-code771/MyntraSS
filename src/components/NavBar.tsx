@@ -29,7 +29,7 @@ export default function NavBar() {
         <div className="leftWrapper flex-1 flex items-center gap-5 md:gap-10">
           <div
             onClick={() => {
-              dispatch(setMenuButtonClicked(!isMenuBarOpen));
+              dispatch(setMenuButtonClicked(!isMenuBarOpen));   //button toggle using dispatch
             }}
             className="block md:hidden"
           >

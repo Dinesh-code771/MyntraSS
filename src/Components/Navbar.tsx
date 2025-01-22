@@ -10,7 +10,7 @@ import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import { useAuth0 } from "@auth0/auth0-react";
-import { setMenuButtonClicked } from "../Redux/navBarSlice";
+import { setMenuButtonClicked } from "../Redux/navBarSlice.js";
 
 export default function Navbar() {
   // const [isBurgerMenuOpen, setIsBurgerMenuOpen]=React.useState(false);

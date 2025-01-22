@@ -6,10 +6,12 @@ export default function MultifilterComponent({
   onClose,
   values,
   componentType,
+  handleClick,
 }: {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   values: { filterName: string; count?: number; type: string }[];
   componentType: string;
+  handleClick: any;
 }) {
   const storedValues = useSelector((state: any) => state.filterSlice)[
     componentType
@@ -110,6 +112,7 @@ export default function MultifilterComponent({
                       type="checkbox"
                       className="cursor-pointer accent-pink-500"
                       value={value.filterName}
+                      onClick={(e) => handleClick(e, value.count, value.type)}
                       //   checked={value.filterName}
                       checked={storedValues
                         .map((item: any) => item?.filterName)

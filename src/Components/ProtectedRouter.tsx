@@ -8,6 +8,7 @@ export default function ProtectedRouter({
   children: React.ReactNode;
 }) {
   const { isAuthenticated, isLoading } = useAuth0();
+  console.log("isAthenticated", isAuthenticated, isLoading);
   if (isLoading) return <div>Loading..</div>;
   // return isAuthenticated && !isLoading ? children : <Login />;
   return isAuthenticated ? <>{children}</> : <Login />;

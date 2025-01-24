@@ -13,6 +13,8 @@ export default function HomeSection() {
     <div className="p-2 flex flex-col gap-2">
       <div className="bg-white p-2 sticky top-[55px]">
         <Search
+          onChange={(e) => console.log(e.target.value)}
+          value=""
           placeHolder={"search by brand and categories"}
           className="rounded-full shadow-lg overflow-hidden px-2 md:hidden "
         />

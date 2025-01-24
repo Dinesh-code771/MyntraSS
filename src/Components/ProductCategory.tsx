@@ -167,7 +167,7 @@ export default function ProductCategory({
         "676a1ee4001ae452e2df",
         "CategoryType",
         name,
-        ["brands", "categories", "colors", "Gender"]
+        ["brands", "categories", "colors", "Gender", "selectedFilters"]
       );
       setFilterDetails(details);
       setSearhFilterDetails({
@@ -227,7 +227,7 @@ export default function ProductCategory({
     async function updateDataInServer() {
       if (allFilterState.params) {
         let dispatchRes = await dispatch(fetctSelectedFilter() as any);
-        console.log(dispatchRes.payload.selectedFilters, "dispatchRes");
+        console.log(dispatchRes, "dispatchRes");
         insertData({
           ...dispatchRes.payload.selectedFilters,
           params: allFilterState.params,

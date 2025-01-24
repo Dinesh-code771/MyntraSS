@@ -10,7 +10,7 @@ import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import { useAuth0 } from "@auth0/auth0-react";
-import { setMenuButtonClicked } from "../Redux/navBarSlice.js";
+import { setMenuButtonClicked, setGlobalSearch } from "../Redux/navBarSlice.js";
 
 export default function Navbar() {
   // const [isBurgerMenuOpen, setIsBurgerMenuOpen]=React.useState(false);
@@ -18,8 +18,16 @@ export default function Navbar() {
     (state: any) => state.navBarSlice.isMenuButtonClicked
   );
 
+  const globalSearchValue = useSelector(
+    (state: any) => state.navBarSlice.globalSearchValue
+  );
+
   const dispatch = useDispatch();
   const { logout } = useAuth0();
+
+  function onGlobalSearchChange(e: any) {
+    dispatch(setGlobalSearch(e.target.value)); // Dispatch the global search value change
+  }
 
   return (
     <nav className="sticky top-0  bg-white shadow-md w-full z-50">
@@ -86,6 +94,8 @@ export default function Navbar() {
           </div> */}
 
           <SearchBar
+            onChange={onGlobalSearchChange}
+            value={globalSearchValue}
             className="px-3  rounded-md w-[80%] hidden bg-[#f5f5f6] md:flex md:items-center md:gap-5"
             placeHolder="Search for products,brands and more"
           />

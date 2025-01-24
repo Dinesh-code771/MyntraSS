@@ -2,13 +2,28 @@ import React from "react";
 import ProductCategory from "./ProductCategory";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-
 import { listDocuments } from "../apis/listDocuments";
+import { useSelector } from "react-redux";
 
 export default function ProductCategoryWraper() {
   //useEffect to scroll to top
   const { name } = useParams<{ name: string }>();
+  const globalSearchValue = useSelector(
+    (state: any) => state.navBarSlice.globalSearchValue
+  );
+
+  const selectedCategory = useSelector(
+    (state: any) => state.filterSlice.Categorie
+  );
+  const selectedBrand = useSelector((state: any) => state.filterSlice.Brand);
+
+  const prices = useSelector((state: any) => state.filterSlice.prices);
   const [productDetails, setProductDetails] = React.useState<any[]>([]);
+  const [searchedProductDetails, setSearchedProductDetails] = React.useState<
+    any[]
+  >([]);
+
+  //fetch products from database
   useEffect(() => {
     const categoryNameValue = name;
     async function fetchDetails() {
@@ -44,10 +59,49 @@ export default function ProductCategoryWraper() {
     //   });
   }, []);
 
+  //search functionality
+  useEffect(() => {
+    let categoryName = selectedCategory.map(
+      (category: any) => category.filterName
+    );
+
+    let pricesString = prices.filterName;
+    let [min, max] = ["0", "0"];
+    if (pricesString?.length > 0) {
+      [min, max] = [pricesString.split(" ")[1], pricesString.split(" ")[3]];
+    }
+
+    let brandsName = selectedBrand.map((category: any) => category.filterName);
+    let filteredProducts = productDetails
+      .filter((product: any) => {
+        if (categoryName.includes(product.category)) {
+          return product;
+        } else {
+          return product;
+        }
+      })
+
+      .filter((product: any) => {
+        if (parseInt(min) && parseInt(max)) {
+          return (
+            product.price >= parseInt(min) && product.price <= parseInt(max)
+          );
+        } else {
+          return product;
+        }
+      })
+
+      .filter((product: any) => {
+        return product.title
+          .toLowerCase()
+          .includes(globalSearchValue.toLowerCase());
+      });
+    setSearchedProductDetails(filteredProducts);
+  }, [globalSearchValue, productDetails, prices,selectedCategory,selectedBrand]);
+
   return (
     <>
-      <ProductCategory productDetails={productDetails} />
-      
+      <ProductCategory productDetails={searchedProductDetails} />
     </>
   );
 }

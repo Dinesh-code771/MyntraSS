@@ -12,9 +12,9 @@ const databases = new Databases(client);
 //   "677dfbf5000825b848bf",
 //   {
 //     CategoryType: "Women",
-// //     productDetails: "",
-// //   }
-// // );
+//     productDetails: "",
+//   }
+// );
 
 // productDetails: JSON.stringify([
 //   {
@@ -52,12 +52,12 @@ const databases = new Databases(client);
 //     likes: 4.5,
 //   },
 //   {
-//     title: "kasee",
-//     description: "Solid Beads and Stones Saree",
+//     title: "Watch",
+//     description: "Smart Watch",
 //     price: 1647,
 //     images: [
-//       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/2024/AUGUST/6/uQlZNooT_ac6154ed7e364c8bb16a32f54c5b6405.jpg",
-//       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/2024/AUGUST/6/WPnrDiaU_bbd9484b45504dc08bf04a8ab6673569.jpg",
+//       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/30688666/2024/8/26/bb617ba2-4ccf-4781-9b5c-f322db6d8ed41724652187664-Realme-Unisex-Smart-Watches-741724652187092-1.jpg",
+//       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/30688666/2024/8/26/bb617ba2-4ccf-4781-9b5c-f322db6d8ed41724652187664-Realme-Unisex-Smart-Watches-741724652187092-1.jpg",
 //     ],
 //     rating: 4.0,
 //     likes: 4.5,
@@ -74,12 +74,45 @@ const databases = new Databases(client);
 //     likes: 4.5,
 //   },
 //   {
-//     title: "GoSriKi",
+//     title: "Ethnic",
 //     description: "Ethnic Motifs Yoke Design Gotta Patti Kurta With Trousers & Dupatta",
 //     price: 872,
 //     images: [
 //     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/25260156/2023/9/29/3d04b8b4-1104-4801-bed4-17ebf98223301695968509595KALINIWomenPinkEthnicMotifsYokeDesignRegularGottaPattiKurtaw1.jpg",
 //     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/25260156/2023/9/29/82246570-679e-46a0-83f3-caa71bc1ae631695968509746KALINIWomenPinkEthnicMotifsYokeDesignRegularGottaPattiKurtaw7.jpg"
+//     ],
+//     rating: 4.0,
+//     likes: 4.3,
+//   },
+//   {
+//     title: "Jewellery",
+//     description: "Women Gold-Plated & Green Stone-Studded Jewellery Set",
+//     price: 872,
+//     images: [
+//     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/8625663/2023/9/22/550dae58-daab-4550-881c-6735d1977c3a1695364882250-Peora-Women-Gold-Plated--Green-Stone-Studded-Jewellery-Set-9-6.jpg",
+//     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/productimage/2019/1/25/103ce4e2-5c87-4464-9641-41104b5aaffa1548355127206-1.jpg",
+//     ],
+//     rating: 4.0,
+//     likes: 4.3,
+//   },
+//   {
+//     title: "Footware",
+//     description: "Girls Floral Embellished One Toe Flats",
+//     price: 445,
+//     images: [
+//     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/28765518/2024/4/8/91aac33b-9f9a-4bc0-a048-0a6a9f46058e1712559335329SoleSagaTexturedPartyBlockMules7.jpg",
+//     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/28765518/2024/4/8/1c3ac48d-a9a4-40e9-b0b7-9e1f086a34b01712559335383SoleSagaTexturedPartyBlockMules2.jpg",
+//     ],
+//     rating: 4.0,
+//     likes: 4.3,
+//   },
+//   {
+//     title: "Shoes",
+//     description: "The Lifestyle Co Women Lightweight Lace-Ups Sports Shoes",
+//     price: 445,
+//     images: [
+//     "	https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/31586616/2024/11/20/2b748184-9f07-44b8-8563-78bbb88b3c061732105262059-The-Roadster-Lifestyle-Co-Women-Lightweight-Lace-Ups-Sports--1.jpg",
+//     "	https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/31586616/2024/11/20/a5c1025c-b564-488e-83bf-ef9e5779538d1732105262032-The-Roadster-Lifestyle-Co-Women-Lightweight-Lace-Ups-Sports--2.jpg",
 //     ],
 //     rating: 4.0,
 //     likes: 4.3,
@@ -193,6 +226,88 @@ const databases = new Databases(client);
 //   }
 // );
 
+// categories: JSON.stringify([
+//   {
+//       "filterName": "Sarees",
+//       "count": 80,
+//       "type": "Categories"
+//     },
+//     {
+//       "filterName": "Dresses",
+//       "count": 60,
+//       "type": "Categories"
+//     },
+//     {
+//       "filterName": "Shoes",
+//       "count": 50,
+//       "type": "Categories"
+//     },
+//     {
+//       "filterName": "Footware",
+//       "count": 70,
+//       "type": "Categories"
+//     },
+// {
+//   filterName: "Watches",
+//   count: 100,
+//   type: "Categories",
+// },
+
+// ]),
+// }
+// );
+
+
+//     brands: JSON.stringify([
+//       {
+//         filterName: "Indo Era",
+//         count: 90,
+//         type: "Brand",
+//       },
+     
+//       {
+//         filterName: "Gosiki",
+//         count: 60,
+//         type: "Brand",
+//       },
+//       {
+//         filterName: "watch",
+//         count: 100,
+//         type: "Brand",
+//       },
+//       {
+//         filterName: "Footware",
+//         count: 100,
+//         type: "Brand",
+//       },
+//       {
+//         filterName: "shoes",
+//         count: 100,
+//         type: "Brand",
+//       },
+//       {
+//         filterName: "Jewellery",
+//         count: 100,
+//         type: "Brand",
+//       },
+//       {
+//         filterName: "all about you",
+//         count: 75,
+//         type: "Brand",
+//       },
+//       {
+//         filterName: "Ethnic",
+//         count: 100,
+//         type: "Brand",
+//       },
+//       {
+//         filterName: "House of Pataudi",
+//         count: 100,
+//         type: "Brand",
+//       },
+//     ]),
+//   }
+// )
 export { client, databases };
 
 // databases
@@ -298,40 +413,36 @@ export { client, databases };
 // //         "category": "Shirts"
 // //       }
 // //     ]),
-// //     categories: JSON.stringify([
-// //         {
-// //             "filterName": "Jeans",
-// //             "count": 80,
-// //             "type": "Categories"
-// //           },
-// //           {
-// //             "filterName": "Dresses",
-// //             "count": 60,
-// //             "type": "Categories"
-// //           },
-// //           {
-// //             "filterName": "Shoes",
-// //             "count": 50,
-// //             "type": "Categories"
-// //           },
-// //           {
-// //             "filterName": "Activewear",
-// //             "count": 70,
-// //             "type": "Categories"
-// //           },
-// //       {
-// //         filterName: "T-shirts",
-// //         count: 100,
-// //         type: "Categories",
-// //       },
-// //       {
-// //         filterName: "Shirts",
-// //         count: 100,
-// //         type: "Categories",
-// //       },
-// //     ]),
-// //   }
-// // );
+//     categories: JSON.stringify([
+//         {
+//             "filterName": "Sarees",
+//             "count": 80,
+//             "type": "Categories"
+//           },
+//           {
+//             "filterName": "Dresses",
+//             "count": 60,
+//             "type": "Categories"
+//           },
+//           {
+//             "filterName": "Shoes",
+//             "count": 50,
+//             "type": "Categories"
+//           },
+//           {
+//             "filterName": "Footware",
+//             "count": 70,
+//             "type": "Categories"
+//           },
+//       {
+//         filterName: "Watches",
+//         count: 100,
+//         type: "Categories",
+//       },
+     
+//     ]),
+//   }
+// );
 
 // //     categories:JSON.stringify([
 // //         {

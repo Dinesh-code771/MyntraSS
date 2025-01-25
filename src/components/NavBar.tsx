@@ -5,7 +5,7 @@ import { FaRegHeart } from 'react-icons/fa';
 import { FaRegUser } from 'react-icons/fa';
 //import { IoSearch } from 'react-icons/io5';
 import { useSelector, useDispatch } from 'react-redux';
-import { setMenuButtonClicked } from '../Redux/navBarSlice';
+import { setMenuButtonClicked, setGlobalSearch } from '../Redux/navBarSlice.js';
 import SearchBar from './SearchBar';
 import { Link } from 'react-router-dom';
 import { MdLogout } from 'react-icons/md';
@@ -13,15 +13,23 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 //const NavBar: React.FC  = () => {
 export default function NavBar() {
-
   // We are taking logout method from useAuth0 hook
   const { logout } = useAuth0();
 
   const isMenuBarOpen = useSelector(
     (state: any) => state.navBarSlice.isMenuButtonClicked
   );
+
+  const globalSearchValue = useSelector(
+    (state: any) => state.navBarSlice.globalSearchValue
+  );
+
   const dispatch = useDispatch();
   console.log(isMenuBarOpen, 'adf');
+
+  function onGlobalSearchChange(e: any) {
+    dispatch(setGlobalSearch(e.target.value));
+  }
 
   return (
     <nav className="sticky top-0 bg-white shadow-md w-full z-50">
@@ -29,7 +37,7 @@ export default function NavBar() {
         <div className="leftWrapper flex-1 flex items-center gap-5 md:gap-10">
           <div
             onClick={() => {
-              dispatch(setMenuButtonClicked(!isMenuBarOpen));   //button toggle using dispatch
+              dispatch(setMenuButtonClicked(!isMenuBarOpen)); //button toggle using dispatch
             }}
             className="block md:hidden"
           >
@@ -37,7 +45,8 @@ export default function NavBar() {
           </div>
 
           <Link to={`/`}>
-            <img className='cursor-pointer'
+            <img
+              className="cursor-pointer"
               src="/MyntraLogo.png"
               width={50}
               height={50}
@@ -84,6 +93,8 @@ export default function NavBar() {
           <SearchBar
             className="rounded  hidden md:flex   md:w-[60%] lg:w-[80%] xl:w-[35rem] bg-[#f5f5f5]  md:items-center gap-3 px-3 py-1"
             placeholder="Search for products, brands and more"
+            onChange={onGlobalSearchChange}
+            value={globalSearchValue}
           />
 
           <div className="icons flex items-center justify-end gap-5">

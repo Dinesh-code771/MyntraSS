@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-//import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './Redux/store';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
@@ -13,6 +13,7 @@ import Kids from './components/Kids';
 import HomeLiving from './components/HomeLiving';
 import Beauty from './components/Beauty';
 import Studio from "./components/Studio";
+import Settings from "./components/Settings";
 import HomeSection from "./components/HomeSection"
 import ProtectRouter from './components/ProtectRouter'
 import Login from './components/Login';
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         element:<HomeSection/>,
       },
       {
-       path: "men",
+       path: "mens",
        element:<Men/>,
       },
       {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
         element:<Women/>,
        },
        {
-        path: "kids",
+        path: "Kids",
         element:<Kids/>,
        },
        {
@@ -66,18 +67,18 @@ const router = createBrowserRouter([
        },
      ],
   },
-  // {
-  //   path: "settings",
-  //   element:<Settings/>,
-  //  },
-  // {
-  //   path: "/login",
-  //   element:<ProtectRouter>{<Login/>}</ProtectRouter>
-  // }
+  {
+    path: "settings",
+    element:<Settings/>,
+   },
   {
     path: "/login",
-    element: <Login/>,
+    element:<ProtectRouter>{<Login/>}</ProtectRouter>
   }
+  // {
+  //   path: "/login",
+  //   element: <Login/>,
+  // }
 ]); 
 
 root.render(
@@ -100,4 +101,4 @@ root.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-//reportWebVitals();
+reportWebVitals();

@@ -6,7 +6,6 @@ import { setMenuButtonClicked } from '../Redux/navBarSlice';
 import { Link } from 'react-router-dom';
 
 export default function MVSideBar() {
-  
   const isMenuBarOpen = useSelector(
     (state: any) => state.navBarSlice.isMenuButtonClicked
   );
@@ -45,9 +44,12 @@ export default function MVSideBar() {
             </div>
             <div className="menuItemsWrapper  flex flex-col p-5 gap-5">
               <div className="items flex justify-between">
-                <Link to={`men`} onClick={() => {
+                <Link
+                  to={`men`}
+                  onClick={() => {
                     dispatch(setMenuButtonClicked(false));
-                  }} >
+                  }}
+                >
                   <h3 className="font-semibold text-black text-[0.8rem]">
                     Men
                   </h3>
@@ -58,46 +60,60 @@ export default function MVSideBar() {
               </div>
 
               <div className="items flex justify-between cursor-pointer">
-              <Link to={`women`} onClick={() => {
+                <Link
+                  to={`women`}
+                  onClick={() => {
                     dispatch(setMenuButtonClicked(false));
-                  }} >
-                <h3 className="font-semibold text-black text-[0.8rem]">
-                  Women
-                </h3>
+                  }}
+                >
+                  <h3 className="font-semibold text-black text-[0.8rem]">
+                    Women
+                  </h3>
                 </Link>
                 <div>
                   <MdOutlineKeyboardArrowRight size={20} color="#bebfc6" />
                 </div>
               </div>
               <div className="items flex justify-between">
-              <Link to={`kids`} onClick={() => {
+                <Link
+                  to={`kids`}
+                  onClick={() => {
                     dispatch(setMenuButtonClicked(false));
-                  }} >
-                <h3 className="font-semibold text-black text-[0.8rem]">Kids</h3>
+                  }}
+                >
+                  <h3 className="font-semibold text-black text-[0.8rem]">
+                    Kids
+                  </h3>
                 </Link>
                 <div>
                   <MdOutlineKeyboardArrowRight size={20} color="#bebfc6" />
                 </div>
               </div>
               <div className="items flex justify-between">
-              <Link to={`home&Living`} onClick={() => {
+                <Link
+                  to={`home&Living`}
+                  onClick={() => {
                     dispatch(setMenuButtonClicked(false));
-                  }} >
-                <h3 className="font-semibold text-black text-[0.8rem]">
-                  Home & Living
-                </h3>
+                  }}
+                >
+                  <h3 className="font-semibold text-black text-[0.8rem]">
+                    Home & Living
+                  </h3>
                 </Link>
                 <div>
                   <MdOutlineKeyboardArrowRight size={20} color="#bebfc6" />
                 </div>
               </div>
               <div className="items flex justify-between">
-              <Link to={`beauty`} onClick={() => {
+                <Link
+                  to={`beauty`}
+                  onClick={() => {
                     dispatch(setMenuButtonClicked(false));
-                  }} >
-                <h3 className="font-semibold text-black text-[0.8rem]">
-                  Beauty
-                </h3>
+                  }}
+                >
+                  <h3 className="font-semibold text-black text-[0.8rem]">
+                    Beauty
+                  </h3>
                 </Link>
                 <div>
                   <MdOutlineKeyboardArrowRight size={20} color="#bebfc6" />

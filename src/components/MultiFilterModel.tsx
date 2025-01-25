@@ -6,30 +6,33 @@ export default function MultiFilterModel({
     onClose,
     values,
     componentType,
+    handleClick,
 }:{
     onClose:React.Dispatch<React.SetStateAction<boolean>>;
     values: {filterName:string; count?:number;type:string}[];
     componentType:string;
+    handleClick:any;
 }) {
 
     const storedValues =
-    useSelector((state: any) => state.filterSlice[componentType]) || [];
+    useSelector((state: any) => state.filterSlice)[componentType];
 
     const [searchValue, setSearchValue] = React.useState<string>('');
 
     const [filteredValues, setFilteredValues] =
     React.useState<{ filterName: string; count?: number; type: string }[]>(values);
 
+    let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+    const [hoveredAlphabet,setHoveredAlphabet] = React.useState<string>("");
+
+    //filter values based on searchValue
     useEffect(()=>{
        const filteredValues =values.filter((value)=>{
         return value.filterName.toLowerCase().includes(searchValue.toLowerCase());
        });
        setFilteredValues(filteredValues);
-    },[searchValue]);
-
-    let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-
-    const [hoveredAlphabet,setHoveredAlphabet] = React.useState<string>("");
+    },[searchValue,values]);
 
   return (
     <div className='absolute top-0 left-0  shadow-md border rounded-md
@@ -45,7 +48,7 @@ export default function MultiFilterModel({
               </div>
               <div className='DisplayAlphabets flex gap-4 '>
                  {
-                    alphabets.map((alphabet,index)=>{
+                    alphabets?.map((alphabet,index)=>{
                      return(
                     <div key={index} className='cursor-pointer'>
                          <p onMouseOver={()=>setHoveredAlphabet(alphabet)} 
@@ -63,11 +66,11 @@ export default function MultiFilterModel({
       </div>
       <div className='body mt-5 px-4 py-1 '>
           <ul className='flex flex-col gap-2 h-[400px] flex-wrap w-full'>
-             {
-                filteredValues.sort((a,b)=>{
+             {            //filteredValues=sortedFilteredValues
+                filteredValues?.sort((a,b)=>{//sorting alphabets by filterName
                     return a.filterName.localeCompare(b.filterName);
                 })
-                .map((value,index)=>{
+                ?.map((value,index)=>{
                     return(
                         <li key={index}
                          className={` text-sm cursor-pointer flex gap-2 items-center max-w-[180px] 
@@ -79,9 +82,12 @@ export default function MultiFilterModel({
                 //   onClick={(e) => handleClick(e, filter.count, filter.type)}
                   type= 'checkbox' 
                   value={value.filterName}
+                  onClick={(e) =>
+                    handleClick(e, value.count, value.type)
+                  }
                   className=" cursor-pointer  accent-pink-500  "
                   checked = {storedValues
-                    .map((item: any) => item?.filterName)
+                    ?.map((item: any) => item?.filterName)
                     .includes(value?.filterName)}
                 />
                 ) : null } 

@@ -13,7 +13,7 @@ export default function ShopByCategory({
 
   return (
     <div>
-     <h3 className='text-center font-extrabold  text-4xl md:text-5xl text-[#2456F0] p-2 uppercase'>
+     <h3 className='text-center font-extrabold  text-4xl md:text-5xl text-[#3E4152] p-2 uppercase'>
         {title}</h3>
         <div className='sections'>
           <div className='section grid grid-cols-1 md:grid-cols-5 justify-center items-center gap-3'>

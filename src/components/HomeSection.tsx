@@ -16,6 +16,8 @@ export default function HomeSection() {
       <SearchBar
         className=" rounded-full shadow-lg border overflow-hidden px-2 md:hidden "
         placeholder={'Search for brands and products'}
+        onChange={(e)=>console.log(e.target.value)}
+        value=" "
       />
       </div>
       <Categories />
@@ -101,27 +103,27 @@ export default function HomeSection() {
         images={[
           {
             categoryName: "mens-clothing",
-            src:"cloths1.png",
+            src:"MenEthnicWear.png",
           },
           {
             categoryName: "women-clothing",
-            src:"cloths1.png",
+            src:"WomenEthnicWear.png",
           },
           {
             categoryName: "kids-clothing",
-            src:"cloths1.png",
+            src:"kidsWear.png",
           },
           {
             categoryName: "electronics",
-            src:"electronics1.png",
+            src:"electronics.png",
           },
           {
             categoryName: "jewelry",
-            src:"jewelry1.png",
+            src:"jewelry.png",
           },
           {
             categoryName: "watches",
-            src:"watches1.png",
+            src:"watches.png",
           },
         ]}
       />

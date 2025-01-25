@@ -12,7 +12,7 @@ export default function PCDropDown({
 const [selectedValue,setSelectedValue] = React.useState<{id:number;name:string;}>(values[0]);
 
   return (
-    <div className='wrapper absolute z-40 h-[40px] border bg-white shadow-lg min-w-[250px] hover:h-auto overflow-hidden'>
+    <div className='wrapper absolute z-40  h-[40px] border bg-white shadow-lg min-w-[250px] hover:h-auto overflow-hidden'>
        <div className="box px-2 py-3 flex items-center cursor-pointer justify-between">
          <div className='flex gap-2 '>
          <span className='text-xs text-[#282C3F] '>{title}</span>

@@ -18,7 +18,8 @@ import Login from "./Components/Login";
 import HomeSection from "./Components/HomeSection";
 import ProductCategory from "./Components/ProductCategory";
 import { store } from "./Redux/store";
-// import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from "./reportWebVitals.js";
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -79,9 +80,11 @@ root.render(
         authorizationParams={{ redirect_uri: window.location.origin }}
       >
         {/* <App /> */}
+
         <RouterProvider router={router} />
       </Auth0Provider>
     </Provider>
+    
   </React.StrictMode>
 );
 

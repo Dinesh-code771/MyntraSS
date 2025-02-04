@@ -4,6 +4,7 @@ import Navbar from "./Components/Navbar";
 import React from "react";
 import Msidebar from "./Components/Msidebar";
 import { Outlet } from "react-router-dom";
+// import Quiz from "./Quiz/Quiz";
 
 // function App(){
 const App: React.FC = () => {
@@ -12,7 +13,9 @@ const App: React.FC = () => {
       <Navbar />
       <Msidebar />
       <Outlet />
+     
     </div>
+    
   );
 };
 

@@ -25,6 +25,7 @@ import Categories from "./Categories";
 import { listDocuments } from "../apis/listDocuments";
 import { useParams } from "react-router-dom";
 import { insertDataIntoDocument } from "../apis/insertDataIntoDocument";
+import { insetPerticularColumn } from "../apis/insertPerticularColumn";
 type productDetailsProps = {
   productDetails: {
     title: string;
@@ -50,6 +51,8 @@ export default function ProductCategory({
     colors: [],
     discountRange: [],
     Gender: [],
+    price: [],
+    selectedFilters: [],
   });
   const [refetch, setRefetch] = useState(false);
 
@@ -65,7 +68,8 @@ export default function ProductCategory({
   const [values, setValues] = useState<number[]>([0, 0]);
   const color = pink[500];
   const allFilterState = useSelector((state: any) => state.filterSlice);
-  const [selectedTopFilter, setSelectedTopFilter] = useState<string[]>([]);
+  // const [selectedTopFilter, setSelectedTopFilter] = useState<string[]>([]);
+  const [topFilters, setTopFilters] = useState([]);
 
   // {
   //   Categorie: [{},{}.{}],
@@ -73,12 +77,18 @@ export default function ProductCategory({
   //    Colors: [],
   //    Discount: [],
   //  }
-  let allFilterStateValues: any = [];
+
+  let allFilterStateValues: any = []; //has whole obj key-value pairs into one single array
   for (let key in allFilterState) {
-    // key = Brand
-    if (allFilterState[key]?.length > 0) {
+    // converts obj into array [ key = Brand,colors,categories,discount]
+
+    if (allFilterState[key]?.length > 0 && key !== "params") {
+      //all filterState has all state "obj"
+
       allFilterStateValues = [...allFilterStateValues, ...allFilterState[key]];
-    } else {
+      //converting into single array & store in "allFilterStateValues"
+    } //prices is obj so it goes to else
+    else {
       if (Object.keys(allFilterState[key]).length > 0 && key !== "params") {
         allFilterStateValues = [...allFilterStateValues, allFilterState[key]];
       }
@@ -86,43 +96,44 @@ export default function ProductCategory({
   }
 
   //constants
-  const topFiltes = [
-    {
-      name: "Age",
-      values: [
-        "0-3",
-        "3-6",
-        "6-9",
-        "9-12",
-        "12-15",
-        "15-18",
-        "18-21",
-        "21-24",
-        "24-27",
-        "27-30",
-        "30-33",
-        "33-36",
-        "36-39",
-        "39-42",
-        "42-45",
-        "45-48",
-      ],
-    },
-    { name: "Bundles", values: ["budles", "singleStyles"] },
-    { name: "Color", values: ["Red", "Blue", "Green"] },
+  // const topFiltes = [
+  //   {
+  //     name: "Age",
+  //     values: [
+  //       "0-3",
+  //       "3-6",
+  //       "6-9",
+  //       "9-12",
+  //       "12-15",
+  //       "15-18",
+  //       "18-21",
+  //       "21-24",
+  //       "24-27",
+  //       "27-30",
+  //       "30-33",
+  //       "33-36",
+  //       "36-39",
+  //       "39-42",
+  //       "42-45",
+  //       "45-48",
+  //     ],
+  //   },
+  //   { name: "Bundles", values: ["budles", "singleStyles"] },
+  //   { name: "Color", values: ["Red", "Blue", "Green"] },
 
-    { name: "Country of origin", values: ["India", "China", "USA"] },
-    { name: "Size", values: ["S", "M", "L", "XL"] },
-  ];
+  //   { name: "Country of origin", values: ["India", "China", "USA"] },
+  //   { name: "Size", values: ["S", "M", "L", "XL"] },
+  // ];
 
   function handleRemoveFilter(filterDetails: {
     filterName: string;
     count?: number;
     type: string;
   }) {
+    console.log(filterDetails, "filterDetails");
     dispatch(
       removePaticularFilter({
-        type: filterDetails.type,
+        type: filterDetails?.type,
         value: filterDetails.filterName,
       })
     );
@@ -139,6 +150,7 @@ export default function ProductCategory({
     if (!Array.isArray(newValue)) return;
     const obj: any = {
       filterName: `Rs. ${newValue[0]} To Rs. ${newValue[1]}`,
+      type: "prices",
       isChecked: true,
     };
     insertData({ ...allFilterState, prices: obj });
@@ -167,13 +179,22 @@ export default function ProductCategory({
         "676a1ee4001ae452e2df",
         "CategoryType",
         name,
-        ["brands", "categories", "colors", "Gender", "selectedFilters"]
+        [
+          "brands",
+          "categories",
+          "colors",
+          "Gender",
+          "selectedFilters",
+          "topFilters",
+        ]
       );
+      console.log(details, "details");
       setFilterDetails(details);
       setSearhFilterDetails({
         searchFilteredBrands: details?.brands,
         searchfilterdCategories: details?.categories,
       });
+      setTopFilters(details.topFilters);
     }
     fetchDetails();
   }, []);
@@ -203,7 +224,7 @@ export default function ProductCategory({
 
   async function insertData(allFilterState: any) {
     const res = await insertDataIntoDocument(
-      JSON.stringify(allFilterState),
+      allFilterState,
       "676a1ec4001bf5b712d9",
       "676a1ee4001ae452e2df",
       "CategoryType",
@@ -213,6 +234,19 @@ export default function ProductCategory({
     //   console.log("throewinf");
     //   return new Error("error");
     // }
+    setRefetch(!refetch);
+  }
+
+  async function updateDataInServerForTopFilter(value: any, index: number) {
+    console.log(value, "val", index, "index");
+    const res = await insetPerticularColumn(
+      { value: value, index: index },
+      "676a1ec4001bf5b712d9",
+      "676a1ee4001ae452e2df",
+      "CategoryType",
+      name,
+      "topFilters"
+    );
     setRefetch(!refetch);
   }
 
@@ -393,7 +427,7 @@ export default function ProductCategory({
             <div className="flex  justify-between">
               <div className="flex flex-[4] justify-between items-center">
                 <div className="flex gap-3 items-center justify-center">
-                  {topFiltes?.map((filter, index) => {
+                  {topFilters?.map((filter: any, index: number) => {
                     return (
                       <div
                         onClick={() => {
@@ -410,7 +444,7 @@ export default function ProductCategory({
                           } text-sm hover:bg-slate-200 rounded-lg px-2 py-1 `}
                         >
                           {filter.name}
-                          {currentSelected != index ? (
+                          {currentSelected !== index ? (
                             <RiArrowDownWideLine />
                           ) : (
                             <RiArrowUpWideLine />
@@ -452,46 +486,69 @@ export default function ProductCategory({
             {/* right section middle */}
             {currentSelected != null && (
               <div className="dropdownfilters  pl-3 pb-4 grid lg:grid-cols-6 xl:grid-cols-9">
-                {topFiltes[currentSelected].values?.map((value, index) => {
-                  return (
-                    <div key={index} className="flex gap-[0.5] items-center ">
-                      <input
-                        onClick={() => {
-                          setSelectedTopFilter([...selectedTopFilter, value]);
-                        }}
-                        checked={selectedTopFilter.includes(value)}
-                        className="accent-pink-500"
-                        type="checkbox"
-                      />
-                      <p className="text-[#8b8d95] cursor-pointer text-sm  rounded-lg px-2 py-1 ">
-                        {value}
-                      </p>
-                    </div>
-                  );
-                })}
+                {/* @ts-ignore */}
+                {topFilters[currentSelected].values?.map(
+                  (value: any, index: number) => {
+                    return (
+                      <div key={index} className="flex gap-[0.5] items-center ">
+                        <input
+                          onClick={() =>
+                            updateDataInServerForTopFilter(
+                              value,
+                              currentSelected
+                            )
+                          }
+                          // setSelectedTopFilter([...selectedTopFilter, value]);
+
+                          checked={topFilters[
+                            currentSelected
+                            //@ts-ignore
+                          ].selectedTopFilter?.includes(value)}
+                          className="accent-pink-500"
+                          type="checkbox"
+                        />
+                        <p className="text-[#8b8d95] cursor-pointer text-sm  rounded-lg px-2 py-1 ">
+                          {value}
+                        </p>
+                      </div>
+                    );
+                  }
+                )}
               </div>
             )}
 
             {/* selectedFilter */}
             <div className="selectedFilter flex flex-wrap gap-3 px-2">
-              {allFilterStateValues?.map((value: any) => {
-                return (
-                  <div className="flex gap-1 max-w-[500px] min-w-[100px] px-1 py-1 rounded-xl items-center justify-between border text-[#3e4152]">
-                    <p className="text-[0.7rem] ">
-                      {value.type === "Colors"
-                        ? parse(value?.filterName)
-                        : value.filterName}
-                    </p>
-                    <RxCross2
-                      onClick={() => {
-                        handleRemoveFilter(value);
-                      }}
-                      size={15}
-                      color="#3e4152"
-                    />
-                  </div>
-                );
-              })}
+              {allFilterStateValues
+                .filter((value: any) => {
+                  console.log(value, "value");
+                  if (value.type === "prices") {
+                    // if (value.isChecked) {
+                    let newValue = value.filterName.split(" ");
+                    return newValue[1] !== "0" || newValue[4] !== "0";
+                    // return value;
+                  } else {
+                    return value;
+                  }
+                })
+                ?.map((value: any) => {
+                  return (
+                    <div className="flex gap-1 max-w-[500px] min-w-[100px] px-1 py-1 rounded-xl items-center justify-between border text-[#3e4152]">
+                      <p className="text-[0.7rem] ">
+                        {value.type === "Colors"
+                          ? parse(value?.filterName)
+                          : value.filterName}
+                      </p>
+                      <RxCross2
+                        onClick={() => {
+                          handleRemoveFilter(value);
+                        }}
+                        size={15}
+                        color="#3e4152"
+                      />
+                    </div>
+                  );
+                })}
             </div>
             {/* right section bottom */}
             <div className="cardsWrapper ] w-full gap-5  p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 border-t border-l ">

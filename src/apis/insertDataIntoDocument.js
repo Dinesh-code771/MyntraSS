@@ -5,7 +5,8 @@ export async function insertDataIntoDocument(
   dataBaseId,
   collectionId,
   columnName,
-  value
+  value,
+  
 ) {
   try {
     console.log("Called",columnName,value)

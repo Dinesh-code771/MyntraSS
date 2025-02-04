@@ -22,6 +22,15 @@ const databases = new Databases(client);
 //     description:
 //       "Ethnic Motifs Embroidered Regular Thread Work Kurta with Salwar & Dupatta",
 //     price: 1679,
+//     categoryType: "Dresses",
+//     brand:"Indo Era",
+//     colors:["Black","Red"],
+//     gender:"Women",
+//     discount:20,
+//     age:[20,30],
+//     countryOfOrigin:"India",
+//     size:"FreeSize",
+//     bundles:"single",
 //     images: [
 //       "https://assets.myntassets.com/f_webp,dpr_2.0,q_60,w_210,c_limit,fl_progressive/assets/images/29629130/2024/5/18/c78e6ae4-0d17-4a46-915e-d955d92487a01716000841537IndoEraBlackEmbroideredStraightKurtaSalwarWithDupattaset1.jpg",
 //       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/29629130/2024/5/18/62ee6452-9507-45f8-90cd-1718fd794b691716000841511IndoEraBlackEmbroideredStraightKurtaSalwarWithDupattaset2.jpg",
@@ -33,6 +42,15 @@ const databases = new Databases(client);
 //     title: "all about you",
 //     description: "Embroidered Satin Saree",
 //     price: 1449,
+//     categoryType: "Sarees",
+//     brand:"all about you",
+//     colors:["Red","Blue"],
+//     gender:"Women",
+//     discount:50,
+//     age:[30,50],
+//     countryOfOrigin:"China",
+//     size:"M",
+//     bundles:"single",
 //     images: [
 //       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/28206710/2024/3/12/8f5a1d59-a5f8-44d4-b1cb-a72a9e1ad7bf1710233595802MaroonSatinSolidwithEmbroideredLaceSaree1.jpg",
 //       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/28206710/2024/3/12/6abf2374-8aa4-4c3e-8561-787d4f2f06e51710233595829MaroonSatinSolidwithEmbroideredLaceSaree2.jpg",
@@ -44,6 +62,15 @@ const databases = new Databases(client);
 //     title: "GoSriKi",
 //     description: "Women Kurta with Trousers & Dupatta set",
 //     price: 997,
+//     categoryType: "Dresses",
+//     brand:"GoSriKi",
+//     colors:["Blue"],
+//     gender:"Women",
+//     discount:70,
+//     age:[10,20],
+//     countryOfOrigin:"Turkey",
+//     size:"S",
+//     bundles:"single",
 //     images: [
 //       "https://assets.myntassets.com/f_webp,dpr_2.0,q_60,w_210,c_limit,fl_progressive/assets/images/31079027/2025/1/9/43b9a255-c141-4e2f-ae6c-16794b3f9f251736429142375-GoSriKi-Women-Kurta-with-Trousers--Dupatta-set-9071736429141-1.jpg",
 //       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/31079027/2025/1/9/65679973-30ae-4f14-a69e-3aac4e4099811736429142238-GoSriKi-Women-Kurta-with-Trousers--Dupatta-set-9071736429141-6.jpg"
@@ -55,6 +82,15 @@ const databases = new Databases(client);
 //     title: "Watch",
 //     description: "Smart Watch",
 //     price: 1647,
+//     categoryType: "Watches",
+//     brand:"Watch",
+//     colors:["white"],
+//     gender:"Boy",
+//     discount:30,
+//     age:[5,20],
+//     countryOfOrigin:"USA",
+//     size:"M",
+//     bundles:"single",
 //     images: [
 //       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/30688666/2024/8/26/bb617ba2-4ccf-4781-9b5c-f322db6d8ed41724652187664-Realme-Unisex-Smart-Watches-741724652187092-1.jpg",
 //       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/30688666/2024/8/26/bb617ba2-4ccf-4781-9b5c-f322db6d8ed41724652187664-Realme-Unisex-Smart-Watches-741724652187092-1.jpg",
@@ -66,6 +102,15 @@ const databases = new Databases(client);
 //     title: "House of Pataudi",
 //     description: "Embroidered Saree With Blouse",
 //     price: 897,
+//     categoryType: "Sarees",
+//     brand:"House of Pataudi",
+//     colors:["Red"],
+//     gender:"Women",
+//     discount:70,
+//     age:[20,40],
+//     countryOfOrigin:"Japan",
+//     size:"L",
+//     bundles:"single",
 //     images: [
 //       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/2024/SEPTEMBER/10/fPNrS6ib_3e4a4cc69d4d4e08bf073c25782d2e00.jpg",
 //       "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/2024/SEPTEMBER/10/YIrq7Thc_1580bfd115fa4865988315d72c38cd5d.jpg",
@@ -77,6 +122,15 @@ const databases = new Databases(client);
 //     title: "Ethnic",
 //     description: "Ethnic Motifs Yoke Design Gotta Patti Kurta With Trousers & Dupatta",
 //     price: 872,
+//     categoryType: "Dresses",
+//     brand:"Ethnic",
+//     colors:["Blue"],
+//     gender:"Women",
+//     discount:80,
+//     age:[20,40],
+//     countryOfOrigin:"Korea",
+//     size:"XL",
+//     bundles:"single",
 //     images: [
 //     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/25260156/2023/9/29/3d04b8b4-1104-4801-bed4-17ebf98223301695968509595KALINIWomenPinkEthnicMotifsYokeDesignRegularGottaPattiKurtaw1.jpg",
 //     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/25260156/2023/9/29/82246570-679e-46a0-83f3-caa71bc1ae631695968509746KALINIWomenPinkEthnicMotifsYokeDesignRegularGottaPattiKurtaw7.jpg"
@@ -88,6 +142,15 @@ const databases = new Databases(client);
 //     title: "Jewellery",
 //     description: "Women Gold-Plated & Green Stone-Studded Jewellery Set",
 //     price: 872,
+//     categoryType: "Jewellery",
+//     brand:"Jewellery",
+//     colors:["Green"],
+//     gender:"Women",
+//     discount:40,
+//     age:[20,40],
+//     countryOfOrigin:"India",
+//     size:"XXL",
+//     bundles:"single",
 //     images: [
 //     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/8625663/2023/9/22/550dae58-daab-4550-881c-6735d1977c3a1695364882250-Peora-Women-Gold-Plated--Green-Stone-Studded-Jewellery-Set-9-6.jpg",
 //     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/productimage/2019/1/25/103ce4e2-5c87-4464-9641-41104b5aaffa1548355127206-1.jpg",
@@ -99,6 +162,15 @@ const databases = new Databases(client);
 //     title: "Footware",
 //     description: "Girls Floral Embellished One Toe Flats",
 //     price: 445,
+//     categoryType: "Footware",
+//     brand:"Footware",
+//     colors:["White"],
+//     gender:"Women",
+//     discount:50,
+//     age:[20,40],
+//     countryOfOrigin:"UK",
+//     size:"M",
+//     bundles:"single",
 //     images: [
 //     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/28765518/2024/4/8/91aac33b-9f9a-4bc0-a048-0a6a9f46058e1712559335329SoleSagaTexturedPartyBlockMules7.jpg",
 //     "https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/28765518/2024/4/8/1c3ac48d-a9a4-40e9-b0b7-9e1f086a34b01712559335383SoleSagaTexturedPartyBlockMules2.jpg",
@@ -110,6 +182,15 @@ const databases = new Databases(client);
 //     title: "Shoes",
 //     description: "The Lifestyle Co Women Lightweight Lace-Ups Sports Shoes",
 //     price: 445,
+//     categoryType: "Shoes",
+//     brand:"Shoes",
+//     colors:["Black"],
+//     gender:"Boy",
+//     discount:60,
+//     age:[10,40],
+//     countryOfOrigin:"UK",
+//     size:"XS",
+//     bundles:"single",
 //     images: [
 //     "	https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/31586616/2024/11/20/2b748184-9f07-44b8-8563-78bbb88b3c061732105262059-The-Roadster-Lifestyle-Co-Women-Lightweight-Lace-Ups-Sports--1.jpg",
 //     "	https://assets.myntassets.com/h_1440,q_90,w_1080/v1/assets/images/31586616/2024/11/20/a5c1025c-b564-488e-83bf-ef9e5779538d1732105262032-The-Roadster-Lifestyle-Co-Women-Lightweight-Lace-Ups-Sports--2.jpg",
@@ -119,6 +200,17 @@ const databases = new Databases(client);
 //   },
 
 // ])
+//   }
+// )
+
+// topFilters : JSON.stringify([
+      
+//       { name: "Buddles", values: ["Bundles", "Single Styles"],selectedValues:[] },
+//       {name:"Color", values:["Red","Blue","Green"],selectedValues:[]},
+//       { name: "Country of origin", values: ["India", "China", "USA"],selectedValues:[] },
+//       { name: "Size", values: ["S", "M", "L", "XL"], selectedValues:[] },
+//     ])
+  
 //   }
 // )
 
@@ -153,14 +245,15 @@ const databases = new Databases(client);
 // )
 
 // discountRange: JSON.stringify([
-// { filterName: '10% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '20% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '30% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '40% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '50% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '60% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '70% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '80% and above', type: 'DISCOUNT RANGE' },
+ 
+// { filterName: '10% and above', type: 'Discount' },
+//                     { filterName: '20% and above', type: 'Discount' },
+//                     { filterName: '30% and above', type: 'Discount' },
+//                     { filterName: '40% and above', type: 'Discount' },
+//                     { filterName: '50% and above', type: 'Discount' },
+//                     { filterName: '60% and above', type: 'Discount' },
+//                     { filterName: '70% and above', type: 'Discount' },
+//                     { filterName: '80% and above', type: 'Discount' },
 // ])
 
 //   }
@@ -170,27 +263,27 @@ const databases = new Databases(client);
 //       {
 //         filterName:
 //           "<div className='flex items-center gap-3'> <div className='w-[13px] h-[13px] border rounded-full bg-[red]'></div> <p>Red</p></div>",
-//         type: "Colors",
+//         type: "colors",
 //       },
 //       {
 //         filterName:
 //           "<div className='flex items-center gap-3'> <div className='w-[13px] h-[13px] border rounded-full bg-[blue]'></div> <p>blue</p></div>",
-//         type: "Colors",
+//         type: "colors",
 //       },
 //       {
 //         filterName:
 //           "<div className='flex items-center gap-3'> <div className='w-[13px] h-[13px] border rounded-full bg-[green]'></div> <p>green</p></div>",
-//         type: "Colors",
+//         type: "colors",
 //       },
 //       {
 //         filterName:
 //           "<div className='flex items-center gap-3'> <div className='w-[13px] h-[13px] border rounded-full bg-[black]'></div> <p>black</p></div>",
-//         type: "Colors",
+//         type: "colors",
 //       },
 //       {
 //         filterName:
 //           "<div className='flex items-center gap-3'> <div className='w-[13px] h-[13px] border rounded-full bg-[white]'></div> <p>white</p></div>",
-//         type: "Colors",
+//         type: "colors",
 //       }
 
 // Gender: JSON.stringify([
@@ -266,7 +359,7 @@ const databases = new Databases(client);
 //       },
      
 //       {
-//         filterName: "Gosiki",
+//         filterName: "Gosriki",
 //         count: 60,
 //         type: "Brand",
 //       },

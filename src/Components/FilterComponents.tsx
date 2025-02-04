@@ -79,21 +79,23 @@ export default function FilterComponents({
         });
       } else {
         const stroeImage = { title: componentType, values: storedValues };
-        dispatch(
-          setFilterValues({
-            title: componentType,
-            values: storedValues.filter(
-              (item: any) => item.filterName !== e.currentTarget.value
-            ),
-          })
-        );
+        // dispatch(
+        //   setFilterValues({
+        //     title: componentType,
+        //     values: storedValues.filter(
+        //       (item: any) => item.filterName !== e.currentTarget.value
+        //     ),
+        //   })
+        // );
         try {
-          onSelectedFilter({
+          //update on server
+          let returned = onSelectedFilter({
             ...allFilterState,
             [componentType]: storedValues.filter(
               (item: any) => item.filterName !== e.currentTarget.value
             ),
           });
+          throw returned;
         } catch (error) {
           setTimeout(() => {
             dispatch(setFilterValues(stroeImage));
@@ -101,18 +103,18 @@ export default function FilterComponents({
         }
       }
     } else {
-      dispatch(
-        setFilterValues({
-          title: componentType,
-          values: [
-            {
-              filterName: e.currentTarget.value,
-              count: count || 0,
-              type: type,
-            },
-          ],
-        })
-      );
+      // dispatch(
+      //   setFilterValues({
+      //     title: componentType,
+      //     values: [
+      //       {
+      //         filterName: e.currentTarget.value,
+      //         count: count || 0,
+      //         type: type,
+      //       },
+      //     ],
+      //   })
+      // );
       onSelectedFilter({
         ...allFilterState,
         [componentType]: [

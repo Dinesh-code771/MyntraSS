@@ -16,7 +16,10 @@ export default function ProductCategoryWraper() {
     (state: any) => state.filterSlice.Categorie
   );
   const selectedBrand = useSelector((state: any) => state.filterSlice.Brand);
-
+  const selectedDiscount = useSelector(
+    (state: any) => state.filterSlice.Discount
+  );
+  const selectedColor = useSelector((state: any) => state.filterSlice.Colors);
   const prices = useSelector((state: any) => state.filterSlice.prices);
   const [productDetails, setProductDetails] = React.useState<any[]>([]);
   const [searchedProductDetails, setSearchedProductDetails] = React.useState<
@@ -34,6 +37,7 @@ export default function ProductCategoryWraper() {
         name,
         ["productDetails"]
       );
+      console.log(details, "details");
       setProductDetails(details?.productDetails);
     }
     fetchDetails();
@@ -61,27 +65,68 @@ export default function ProductCategoryWraper() {
 
   //search functionality
   useEffect(() => {
-    let categoryName = selectedCategory.map(
-      (category: any) => category.filterName
+    let categoryName = selectedCategory?.map((category: any) =>
+      category.filterName?.toLowerCase()
+    );
+    let selectedColorNames = selectedColor?.map((color: any) =>
+      color.filterName?.toLowerCase()
     );
 
+    console.log(selectedColor, "rss", selectedColorNames);
     let pricesString = prices.filterName;
     let [min, max] = ["0", "0"];
     if (pricesString?.length > 0) {
       [min, max] = [pricesString.split(" ")[1], pricesString.split(" ")[3]];
     }
 
-    let brandsName = selectedBrand.map((category: any) => category.filterName);
+    let brandsName = selectedBrand.map((brand: any) =>
+      brand.filterName.toLowerCase()
+    );
+
+    let selectedDiscountValue = selectedDiscount?.map((discount: any) =>
+      discount.filterName?.toLowerCase()
+    );
+
+    console.log(selectedDiscountValue, "DiscountRangeFromRedux");
+
     let filteredProducts = productDetails
-      .filter((product: any) => {
-        if (categoryName.includes(product.category)) {
+      //filter by categoryType
+      ?.filter((product: any) => {
+        if (categoryName.includes(product.categoryType?.toLowerCase())) {
           return product;
-        } else {
+        } else if (categoryName.length === 0) {
           return product;
         }
       })
 
+      //filter by brands
       .filter((product: any) => {
+        if (brandsName.includes(product.brand?.toLowerCase())) {
+          return product;
+        } else if (brandsName.length === 0) {
+          return product;
+        }
+      })
+
+      //filter by Discount Range
+      ?.filter((product: any) => {
+        //checking whether it is an array because include works on array
+        //(string(product.discount))-converts product.discount a number into string
+
+        if (
+          Array.isArray(selectedDiscountValue)
+            ? selectedDiscountValue[0]?.includes(product.discount)
+            : false
+        ) {
+          // if (Discount?.includes(product.discountRange?.toLowerCase())) {
+          return product;
+        } else if (selectedDiscountValue?.length === 0) {
+          return product;
+        }
+      })
+
+      //filter by price
+      ?.filter((product: any) => {
         if (parseInt(min) && parseInt(max)) {
           return (
             product.price >= parseInt(min) && product.price <= parseInt(max)
@@ -91,13 +136,37 @@ export default function ProductCategoryWraper() {
         }
       })
 
-      .filter((product: any) => {
+      //color filter
+      ?.filter((product: any) => {
+        console.log(product, selectedColorNames, "colors");
+        if (
+          // Array.isArray(product.colors) &&
+          product?.colors?.some((item: any) => {
+            return selectedColorNames.join("").includes(item?.toLowerCase());
+          })
+        ) {
+          return product;
+        } else if (selectedColorNames.length === 0) {
+          return product;
+        }
+      })
+
+      //search by title
+      ?.filter((product: any) => {
         return product.title
           .toLowerCase()
           .includes(globalSearchValue.toLowerCase());
       });
     setSearchedProductDetails(filteredProducts);
-  }, [globalSearchValue, productDetails, prices,selectedCategory,selectedBrand]);
+  }, [
+    globalSearchValue,
+    productDetails,
+    prices,
+    selectedCategory,
+    selectedBrand,
+    selectedColor,
+    selectedDiscount,
+  ]);
 
   return (
     <>

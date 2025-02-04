@@ -25,7 +25,7 @@ export default function NavBar() {
   );
 
   const dispatch = useDispatch();
-  console.log(isMenuBarOpen, 'adf');
+  //console.log(isMenuBarOpen, 'adf');
 
   function onGlobalSearchChange(e: any) {
     dispatch(setGlobalSearch(e.target.value));

@@ -172,15 +172,15 @@ export default function FilterComponent({
           values: storedValues,
         };
         //console.log(storedValues, 'store');
-        dispatch(
-          //for removing [insert's data in redux]
-          setFilterValues({
-            title: componentType,
-            values: storedValues?.filter(
-              (item: any) => item?.filterName !== e.currentTarget.value
-            ),
-          })
-        );
+        // dispatch(
+        //   //for removing [insert's data in redux]
+        //   setFilterValues({
+        //     title: componentType,
+        //     values: storedValues?.filter(
+        //       (item: any) => item?.filterName !== e.currentTarget.value
+        //     ),
+        //   })
+        // );
         //when we got some issue with server it won't update that's why we wrap in try-catch block
         try {
           // update on server
@@ -205,19 +205,19 @@ export default function FilterComponent({
       // setStoreSelectedValues([
       //     {filterName: e.currentTarget.value, count: count ? count : 0},
       // ]);
-      dispatch(
-        setFilterValues({
-          title: componentType,
-          values: [
-            //key:[value]
-            {
-              filterName: e.currentTarget.value,
-              count: count ? count : 0,
-              type: type,
-            },
-          ],
-        })
-      );
+      // dispatch(
+      //   setFilterValues({
+      //     title: componentType,
+      //     values: [
+      //       //key:[value]
+      //       {
+      //         filterName: e.currentTarget.value,
+      //         count: count ? count : 0,
+      //         type: type,
+      //       },
+      //     ],
+      //   })
+      // );
       onSelectedFilter({
         ...allFilterState,
         [componentType]: [

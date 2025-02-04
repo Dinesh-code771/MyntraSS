@@ -18,7 +18,12 @@ import PCDropDown from './PCDropDown';
 import { listDocuments } from '../apis/listDocuments';
 import { useParams } from 'react-router-dom';
 import { insertDataIntoDocument } from '../apis/insertDataIntoDocument';
+import { insertPerticularColumn } from '../apis/insertPerticularColumn';
 import parse from 'html-react-parser';
+import {
+  setTopFilters,
+  setCurrentTopFilterSelected,
+} from '../Redux/navBarSlice';
 
 type ProductCategoryPropsType = {
   productDetails: {
@@ -36,14 +41,23 @@ type ProductCategoryPropsType = {
 export default function ProductCategory({
   productDetails,
 }: ProductCategoryPropsType) {
-  //for filters to select index(age,bundles)
-  const [currentSelected, setCurrentSelected] = React.useState<null | number>(
-    null
-  );
-  //for slider
+  //for slider(price)
   const [values, setValues] = React.useState<number[]>([0, 0]);
 
-  const [selectedTopFilter, setSelectedTopFilter] = React.useState<string[]>();
+  //const [selectedTopFilter, setSelectedTopFilter] = React.useState<string[]>();
+  //as we removed static topFilters we need state to save
+
+  //const [topFilters, setTopFilters] = React.useState([]);
+  //here we get[bundles,countryOfOrigin,size]
+  const topFilters = useSelector((state: any) => state.navBarSlice.topFilters);
+  const currentSelected = useSelector(
+    (state: any) => state.navBarSlice.currentTopFilterSelected
+  );
+
+  //for topFilters to select index(age,bundles)
+  //const [currentSelected, setCurrentSelected] = React.useState<null | number>(
+  // null);
+  //console.log(currentSelected,"currentSelected");//it shows index(0,1,2)
 
   //filterDetails has all values
   const [filterDetails, setFilterDetails] = React.useState({
@@ -52,10 +66,11 @@ export default function ProductCategory({
     colors: [],
     discountRange: [],
     Gender: [],
+    selectedFilters: [],
   });
 
   //searched values are stored here
-  const [searchFilteredDetails, setSearchFilteredDetails] = React.useState({
+  const [searchFilterDetails, setSearchFilterDetails] = React.useState({
     searchFilteredCategories: [],
     searchFilteredBrands: [],
   });
@@ -66,25 +81,25 @@ export default function ProductCategory({
   const [refetch, setRefetch] = React.useState(false);
 
   //we took static values
-  const topFilters = [
-    { name: 'Age', values: ['0-3', '3-6', '6-9', '9-12'] },
-    { name: 'Bundles', values: ['Bundles', 'Single Styles'] },
-    {
-      name: 'Country Of Origin',
-      values: [
-        'All Countries',
-        'India',
-        'USA',
-        'China',
-        'Turkey',
-        'Malaysia',
-        'Portugal',
-        'Vietnam',
-        'Jordan',
-      ],
-    },
-    { name: 'Size', values: ['XS', 'S', 'M', 'L', 'XL'] },
-  ];
+  // const topFilters = [
+  //   { name: 'Age', values: ['0-3', '3-6', '6-9', '9-12'] },
+  //   { name: 'Bundles', values: ['Bundles', 'Single Styles'] },
+  //   {
+  //     name: 'Country Of Origin',
+  //     values: [
+  //       'All Countries',
+  //       'India',
+  //       'USA',
+  //       'China',
+  //       'Turkey',
+  //       'Malaysia',
+  //       'Portugal',
+  //       'Vietnam',
+  //       'Jordan',
+  //     ],
+  //   },
+  //   { name: 'Size', values: ['XS', 'S', 'M', 'L', 'XL'] },
+  // ];
 
   const dispatch = useDispatch();
 
@@ -94,10 +109,14 @@ export default function ProductCategory({
   const allFilterState = useSelector((state: any) => state.filterSlice);
 
   let allFilterStateValues: any = []; //has whole obj key-value pairs into one single array
+  // console.log(
+  //   '@@@@@@@@ allFilterState , before for loop = ' +
+  //     JSON.stringify(Object.keys(allFilterState))
+  // );
   for (let key in allFilterState) {
-    //converts obj into array [key-brand,colors,categories]
+    //converts obj into array [key(params)-brand,colors,categories,discount]
     if (!allFilterState[key]) {
-      console.log(`@@@@@@@@ allFilterState[key] is undefined for key = ${key}`);
+      console.log(`allFilterState[key] is undefined for key = ${key}`);
       continue;
     }
     // console.log(
@@ -105,11 +124,10 @@ export default function ProductCategory({
     // );
 
     if (allFilterState[key]?.length > 0 && key !== 'params') {
-      //allFilterState has all state "obj"
       allFilterStateValues = [...allFilterStateValues, ...allFilterState[key]]; //converting into single array & store in "allFilterStateValues"
     } //prices is obj so it goes to else
     else {
-      if (Object.keys(allFilterState[key]).length > 0 && key !== 'params') {
+      if (Object.keys(allFilterState[key])?.length > 0 && key !== 'params') {
         allFilterStateValues = [...allFilterStateValues, allFilterState[key]];
       }
     }
@@ -128,7 +146,7 @@ export default function ProductCategory({
   }) {
     dispatch(
       removeParticularFilter({
-        type: filterDetails.type,
+        type: filterDetails?.type,
         value: filterDetails.filterName,
       })
     );
@@ -154,19 +172,18 @@ export default function ProductCategory({
   });
 
   function handleSlideChange(event: Event, newValue: number | number[]) {
-     console.log(newValue,"new ");
-    // if (!Array.isArray(newValue)) return;
-    //checks if newValue is an array to avoid runtime errors
+    console.log(newValue, 'new ');
     //storing in redux(localState)
     //@ts-ignore
     setValues([newValue[0], newValue[1]]);
-      //@ts-ignore
+    //@ts-ignore
     dispatch(setPrices([newValue[0], newValue[1]]));
 
     //inserting into server
     if (!Array.isArray(newValue)) return;
     const obj: any = {
-      filterName: `Rs.${newValue[0]} To Rs. ${newValue[1]}`,
+      filterName: `Rs. ${newValue[0]} To Rs. ${newValue[1]}`,
+      type: 'prices',
       isChecked: true,
     }; //we are converting into obj and inserting
     insertData({ ...allFilterState, prices: obj }); //spread(keep all values, only insert prices)
@@ -177,9 +194,10 @@ export default function ProductCategory({
     //console.log('&&&&&&&&&&' + allFilterState.prices);
     if (!Object.keys(allFilterState.prices).length) return; //if obj.keys=empty return(exit)
     let name = allFilterState.prices?.filterName;
-    console.log(name,"name");
-    let newValue = name?.split('');
+    //console.log(name,"name");
+    let newValue = name?.split(' '); //gap is mandatory
     setValues([newValue[1], newValue[newValue.length - 1]]);
+    console.log(newValue, 'newValue');
   }, [allFilterState.prices]);
 
   //for getting values as 1,000 in slider
@@ -204,28 +222,37 @@ export default function ProductCategory({
         '676a1ec4001bf5b712d9',
         '676a1ee4001ae452e2df',
         'CategoryType',
-        name,
-        ['brands', 'categories', 'colors', 'discountRange', 'Gender',"selectedFilters"]
+        name, //we will have prices in "selectedFilter" so we didn't mention in array
+        [
+          'brands',
+          'categories',
+          'colors',
+          'discountRange',
+          'Gender',
+          'selectedFilters',
+          'topFilters',
+        ]
       ); //this names should match with DB attributes
       setFilterDetails(details); //Original details it won't change it has all values/details from D.B
-      setSearchFilteredDetails({
+      setSearchFilterDetails({
         searchFilteredBrands: details?.brands,
         searchFilteredCategories: details?.categories,
       });
-      console.log(details, 'all values');
+      dispatch(setTopFilters(details.topFilters));
+      console.log(details, 'details');
     }
     fetchDetails();
-  }, []);
+  }, [refetch]);
 
   useEffect(() => {
-    let categories = searchFilteredDetails?.searchFilteredCategories || [];
+    let categories = searchFilterDetails?.searchFilteredCategories;
     let searchCategories = categories.filter((item: any) => {
       return item?.filterName
         .toLowerCase()
-        .includes(categorySearch.toLocaleLowerCase());
+        .includes(categorySearch.toLowerCase());
     });
-    setSearchFilteredDetails({
-      ...searchFilteredDetails,
+    setSearchFilterDetails({
+      ...searchFilterDetails,
       searchFilteredCategories: searchCategories,
     });
   }, [categorySearch]);
@@ -241,7 +268,6 @@ export default function ProductCategory({
 
   //if you add/remove data[checkboxes] we have to update in DB
   //here "allFilterState" holds data to be inserted into "DB"
-  // useEffect(() => {
   async function insertData(allFilterState: any) {
     //we are giving this fun as a prop to FilterComponent
     console.log('allFilterState', allFilterState); //it is called when checkboxes are selected.
@@ -254,11 +280,27 @@ export default function ProductCategory({
     );
     setRefetch(!refetch);
   }
+
+  //if you add/remove data[checkboxes] we have to update in DB same as above we did for topFilters
+  async function updateDataInServerForTopFilter(value: any, index: number) {
+    console.log(value, 'value', index, 'index');
+    const res = await insertPerticularColumn(
+      { value: value, index: index },
+      '676a1ec4001bf5b712d9',
+      '676a1ee4001ae452e2df',
+      'CategoryType',
+      name,
+      'topFilters'
+    );
+    setRefetch(!refetch);
+  }
+
   // setTimeout(() => {
   //   insertData();
   // }, 4000);
   // }, [allFilterState]);
 
+  //for reduxStore
   useEffect(() => {
     async function fetchAndInsertData() {
       let dispatchRes = await dispatch(fetchSelectedFilter() as any);
@@ -271,12 +313,12 @@ export default function ProductCategory({
     async function updateDataInServer() {
       if (allFilterState.params) {
         let dispatchRes = await dispatch(fetchSelectedFilter() as any);
-        console.log(dispatchRes, 'dispatchRes');
+        //console.log(dispatchRes.payload.selectedFilters, 'dispatchRes');
         insertData({
           ...dispatchRes.payload.selectedFilters,
           params: allFilterState.params,
         });
-        console.log(allFilterState, 'reddy');
+        console.log(allFilterState, 'allFilterState');
       }
     }
     updateDataInServer();
@@ -333,7 +375,7 @@ export default function ProductCategory({
                 <FilterComponent
                   title={'CATEGORIES'}
                   componentType={'Categorie'}
-                  filterValues={searchFilteredDetails.searchFilteredCategories}
+                  filterValues={searchFilterDetails.searchFilteredCategories}
                   // filterValues={[
                   //   { filterName: 'Shirts', count: 100, type: 'CATEGORIES' },
                   //   { filterName: 'T-Shirts', count: 100, type: 'CATEGORIES' },
@@ -352,7 +394,7 @@ export default function ProductCategory({
                 <FilterComponent
                   title={'BRAND'}
                   componentType={'Brand'}
-                  filterValues={searchFilteredDetails.searchFilteredBrands}
+                  filterValues={searchFilterDetails.searchFilteredBrands}
                   // filterValues={[
                   //   {
                   //     filterName: 'Louis Philippe',
@@ -479,6 +521,7 @@ export default function ProductCategory({
                   setSearchValue={setBrandSearch}
                   onSelectedFilter={insertData}
                 />
+                {/* price slide */}
                 <div className="px-3 border-t py-4">
                   <h3 className="font-bold text-xs text-[#282c3e]">PRICE</h3>
                   <ThemeProvider theme={darkPinkTheme}>
@@ -528,19 +571,9 @@ export default function ProductCategory({
                   onSelectedFilter={insertData}
                 />
                 <FilterComponent
-                  title={'DISCOUNT RANGE'}
+                  title={'DISCOUNT RANGE2'}
                   componentType={'Discount'}
                   filterValues={filterDetails?.discountRange}
-                  // filterValues={[
-                  //   { filterName: '10% and above', type: 'DISCOUNT RANGE' },
-                  //   { filterName: '20% and above', type: 'DISCOUNT RANGE' },
-                  //   { filterName: '30% and above', type: 'DISCOUNT RANGE' },
-                  //   { filterName: '40% and above', type: 'DISCOUNT RANGE' },
-                  //   { filterName: '50% and above', type: 'DISCOUNT RANGE' },
-                  //   { filterName: '60% and above', type: 'DISCOUNT RANGE' },
-                  //   { filterName: '70% and above', type: 'DISCOUNT RANGE' },
-                  //   { filterName: '80% and above', type: 'DISCOUNT RANGE' },
-                  // ]}
                   isMultiSelect={false}
                   isSearchable={false}
                   searchValue=""
@@ -554,14 +587,14 @@ export default function ProductCategory({
             <div className="wrapperForTopRight flex flex-col  py-4 w-full  ">
               <div className="wrapper flex  justify-between">
                 <div className="filters w-full flex flex-[6] pl-2 gap-2 cursor-pointer md:flex-wrap justify-start items-center">
-                  {topFilters?.map((filter, index) => {
+                  {topFilters?.map((filter: any, index: number) => {
                     return (
                       <div
                         onClick={() => {
                           if (currentSelected === index) {
-                            return setCurrentSelected(null); //condition for toggle (" ^ " buttons)
+                            return dispatch(setCurrentTopFilterSelected(null)); //condition for toggle (" ^ " buttons)
                           }
-                          setCurrentSelected(index);
+                          dispatch(setCurrentTopFilterSelected(index));
                         }} //to select filter(Age)
                         key={index}
                         className="flex flex-col gap-1 items-center mb-2"
@@ -603,21 +636,31 @@ export default function ProductCategory({
                   // because if 1st index is 0(i.e,false)to make true we added !=null
                   currentSelected != null && (
                     <div className="dropdownFilters w-full grid grid-col gap-5 lg:grid-cols-3 xl:grid-cols-5 justify-start place-items-start pb-4 pl-4 pt-1">
+                      {/* @ts-ignore */}
                       {topFilters[currentSelected].values?.map(
-                        (value, index) => {
+                        (value: any, index: number) => {
                           return (
                             <div
                               key={index}
                               className="flex gap-1 items-center"
                             >
                               <input
-                                onClick={() => {
-                                  setSelectedTopFilter([
-                                    ...(selectedTopFilter || []),
+                                onClick={() =>
+                                  updateDataInServerForTopFilter(
                                     value,
-                                  ]);
-                                }}
-                                checked={selectedTopFilter?.includes(value)}
+                                    currentSelected
+                                  )
+                                }
+                                checked={topFilters[
+                                  currentSelected
+                                  //@ts-ignore
+                                ].selectedValues.includes(value)}
+                                // setSelectedTopFilter([
+                                //   ...(selectedTopFilter || []),
+                                //   value,
+                                // ]);
+                                //}}
+                                //checked={selectedTopFilter?.includes(value)}
                                 type="checkbox"
                                 className=" accent-pink-500"
                               />
@@ -634,24 +677,34 @@ export default function ProductCategory({
               </div>
               {/*selected filter*/}
               <div className="selectedFilter w-full flex flex-wrap gap-3 px-2">
-                {allFilterStateValues?.map((value: any) => {
-                  return (
-                    <div className="flex gap-1 max-w-[500px] min-w-[100px] justify-between items-center py-1 px-1 rounded-xl  border text-[#3e4152]">
-                      <p className="text-[0.7rem] ">
-                        {value.type === 'Colors'
-                          ? parse(value?.filterName)
-                          : value.filterName}
-                      </p>
-                      <RxCross2
-                        onClick={() => {
-                          handleRemoveFilter(value);
-                        }}
-                        size={15}
-                        color="#3e4152"
-                      />
-                    </div>
-                  );
-                })}
+                {allFilterStateValues
+                  ?.filter((value: any) => {
+                    if (value.type === 'prices') {
+                      let newValue = value.filterName.split('');
+                      //console.log(newValue,"newValue");
+                      return newValue[1] !== '0' || newValue[4] !== '0';
+                    } else {
+                      return value;
+                    }
+                  })
+                  ?.map((value: any) => {
+                    return (
+                      <div className="flex gap-1 max-w-[500px] min-w-[100px] justify-between items-center py-1 px-1 rounded-xl  border text-[#3e4152]">
+                        <p className="text-[0.7rem] ">
+                          {value.type === 'Colors'
+                            ? parse(value?.filterName)
+                            : value.filterName}
+                        </p>
+                        <RxCross2
+                          onClick={() => {
+                            handleRemoveFilter(value);
+                          }}
+                          size={15}
+                          color="#3e4152"
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
 

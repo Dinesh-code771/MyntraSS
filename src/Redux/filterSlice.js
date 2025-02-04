@@ -18,17 +18,17 @@ export const fetchSelectedFilter = createAsyncThunk(
   'filter/fetchSelectedFilters', //key for debugging
   async (name, { getState, dispatch, rejectWithValue }) => {
     try {
-      console.log(getState().filterSlice, 'getState');
+      //console.log(getState().filterSlice, 'getState');//giving state whole obj
       // Call the API(API call) using the name parameter[fetching from backend]
       const res = await listDocuments(
         '676a1ec4001bf5b712d9',
         '676a1ee4001ae452e2df',
         'CategoryType',
-        getState().filterSlice.params,
+        getState().filterSlice['params'],
         ['selectedFilters']
       );
       const { selectedFilters } = res; //Extracting data from API
-      console.log(selectedFilters, 'selectedFilters');
+      //console.log(selectedFilters, 'selectedFilters');
       dispatch(updateFilters(selectedFilters)); //storing data in redux(state update)
       // Return the response to be handled in extraReducers
       return res;
@@ -60,11 +60,22 @@ export const filterSlice = createSlice({
     removeParticularFilter: (state, action) => {
       const type = action.payload.type;
       const value = action.payload.value;
+      console.log(`type= ${type} and value = ${value}`);
+      if (type === 'prices') {
+        //checking if filter is obj(we are checking the type)
+        state.prices = {
+          filterName: 'Rs. 0 To Rs. 0',
+          type: 'prices',
+          isChecked: false,
+        };
+        return;
+      } //if it is array then go with this (we are updating the state)
       state[type] = state[type]?.filter((item) => item?.filterName !== value);
     },
     setPrices: (state, action) => {
       const obj = {
-        filterName: `Rs.${action.payload[0]} To Rs. ${action.payload[1]}`,
+        filterName: `Rs. ${action.payload[0]} To Rs. ${action.payload[1]}`,
+        type: 'prices',
         isChecked: true,
       };
       state.prices = obj;
@@ -73,7 +84,7 @@ export const filterSlice = createSlice({
       state.params = action.payload;
     },
     updateFilters: (state, action) => {
-      console.log(action.payload, 'action.payload');
+      //console.log(action.payload, 'action.payload');
       //state = action.payload this not correct
       return { ...action.payload };
     },

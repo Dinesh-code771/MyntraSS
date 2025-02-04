@@ -19,10 +19,11 @@ export default function ProductCategoryWrapper() {
   >([]);
   // console.log(searchedProductDetails, 'searchedProductDetails');
 
+  //getting search value from redux
   const globalSearchValue = useSelector(
     (state: any) => state.navBarSlice.globalSearchValue
   );
-  console.log(globalSearchValue, 'globalSearchValue');
+  //console.log(globalSearchValue, 'globalSearchValue');
 
   const selectedCategory = useSelector(
     (state: any) => state.filterSlice.Categorie || []
@@ -35,10 +36,18 @@ export default function ProductCategoryWrapper() {
   const prices = useSelector((state: any) => state.filterSlice.prices);
 
   const selectedColor = useSelector(
-    (state:any) => state.filterSlice.Colors ||[]
+    (state: any) => state.filterSlice.Colors || []
   );
 
-  //const dispatch = useDispatch();
+  const selectedDiscount = useSelector(
+    (state: any) => state.filterSlice.Discount || []
+  );
+
+  const topFilters = useSelector((state: any) => state.navBarSlice.topFilters);
+
+  const currentSelectedFilter = useSelector(
+    (state: any) => state.navBarSlice.currentTopFilterSelected
+  );
 
   //fetch products from dataBase
   useEffect(() => {
@@ -55,68 +64,124 @@ export default function ProductCategoryWrapper() {
       setProductDetails(details?.productDetails);
     }
     fetchDetails();
-  }, []);//if "name" changes run the function we have to give as dependency
+  }, []); //if "name" changes run the function we have to give as dependency
 
   //it runs when component mounts,when updates,when component unmount
   //search functionality //selectedCategory - shirt,jeans
   useEffect(() => {
-    let categoryName = selectedCategory.map(
-      (category: any) => category.filterName?.toLowerCase()
+    let categoryName = selectedCategory.map((category: any) =>
+      category.filterName?.toLowerCase()
     );
-    let brandName = selectedBrand.map(
-      (brand: any) => brand.filterName?.toLowerCase()
+    let brandName = selectedBrand.map((brand: any) =>
+      brand.filterName?.toLowerCase()
     );
-    let selectedColorNames = selectedColor.map(
-      (color: any) => color.filterName?.toLowerCase()
+    let selectedColorNames = selectedColor.map((color: any) =>
+      color.filterName?.toLowerCase()
     );
+    let selectedDiscountValue = selectedDiscount.map((discount: any) =>
+      discount.filterName?.toLowerCase()
+    );
+    //console.log(selectedDiscountValue, 'DiscountRangeFromRedux');
+    //console.log(productDetails, 'productDetails before filtering');
     //priceString - Rs. 7000 To Rs. 3400 [0-RS.,1-7000,2-To,3-Rs.,4-3400]index
-    let pricesString = prices.filterName;//prices.filterName = 0 to 0
+    let pricesString = prices.filterName; //prices.filterName = 0 to 0
     //let pricesString = prices?.filterName ||'';//if filterName is undefined or not a string it throws error so
-    let [min, max] = ["0","0"]; 
-    if(pricesString?.length > 0){
-      [min, max] = [pricesString.split("")[1],pricesString.split("")[4]]
+    let [min, max] = ['0', '0'];
+    if (pricesString?.length > 0) {
+      [min, max] = [pricesString.split('')[1], pricesString.split('')[4]];
     }
     let filteredProducts = productDetails
-      ?.filter((product: any) => {//filter by category
-        if(categoryName?.includes(product.categoryType?.toLowerCase())){
-          return product;
-        }else if(categoryName.length === 0){
-          return product;//return all products
-        }
-      })//filter by brand
+      //?(optionalParameter) - indicates if product is not null or undefined thenOnly proceed.
       ?.filter((product: any) => {
-        if(brandName?.includes(product.brand?.toLowerCase())){
+        //filter by category
+        if (categoryName?.includes(product.categoryType?.toLowerCase())) {
           return product;
-        }else if(brandName.length === 0){
+        } else if (categoryName.length === 0) {
+          return product; //return all products
+        }
+      }) //filter by brand
+      ?.filter((product: any) => {
+        if (brandName?.includes(product.brand?.toLowerCase())) {
+          return product;
+        } else if (brandName.length === 0) {
           return product;
         }
-      })//filter by price
-      .filter((product:any)=>{ //as min-max are strings we have to convert them into numbers 
-        if (parseInt(min) && parseInt(max)){
+      }) //filter by price
+      ?.filter((product: any) => {
+        //as min-max are strings we have to convert them into numbers
+        if (parseInt(min) && parseInt(max)) {
           return (
             product.price >= parseInt(min) && product.price <= parseInt(max)
           );
-        }else{
+        } else {
           return product;
         }
-        })//color filter
-        .filter((product:any)=>{
-          if(
-            product.colors.some((item:any)=>{
-              return selectedColorNames.includes(item.toLowerCase());
-            })
-          ){
-            return product;
-          }else if (selectedColorNames.length === 0){
-            return product;
-          }
-        })
-      .filter((product: any) => {//search by title
-        return product.title.toLowerCase().
-        includes(globalSearchValue?.toLowerCase());
+      }) //color filter
+      ?.filter((product: any) => {
+        if (
+          product?.colors?.some((item: any) => {
+            return selectedColorNames.join('').includes(item.toLowerCase());
+          })
+        ) {
+          return product;
+        } else if (selectedColorNames.length === 0) {
+          return product;
+        }
+      }) //discountRange filter
+      ?.filter((product: any) => {
+        //checking whether it is an array because includes works on arrays
+        //(String(product.discount))-converts product.discount a number into string
+        if (
+          Array.isArray(selectedDiscountValue)
+            ? selectedDiscountValue[0]?.includes(product.discount)
+            : false
+        ) {
+          //if it is not array it returns false
+          return product;
+        } else if (selectedDiscountValue.length === 0) {
+          return product;
+        }
+      })
+      //filter for topFilters for Ages
+      // .filter((product) => {
+      //   console.log(product,"topFilters product");
+      //   // ['3-9'] ---> "3-9" ===> [3,9]
+      //   if (currentSelectedFilter === null) return product;
+      //   if (topFilters[currentSelectedFilter].selectedValues.length === 0)
+      //     return product;
+      //   let selectedAges = topFilters[currentSelectedFilter].selectedValues
+      //     .join()
+      //     .split('-');
+      //   let productAge = product.age;
+      //   let [min, max] = [parseInt(selectedAges[0]), parseInt(selectedAges[1])];
+      //   if (productAge && min >= productAge[0] && min <= productAge[1]) {
+      //     return product;
+      //   } else if (productAge && max >= productAge[0] && max <= productAge[1]) {
+      //     return product;
+      //   } else if (selectedAges.length === 0) {
+      //     return product;
+      //   }
+      // })
+      ?.filter((product: any) => {
+        //search by title
+        return product.title
+          .toLowerCase()
+          .includes(globalSearchValue?.toLowerCase());
       });
+    console.log(filteredProducts, 'filteredProducts after filtering');
+
     setSearchedProductDetails(filteredProducts);
-  }, [globalSearchValue, productDetails,selectedCategory,selectedBrand,prices]);
+  }, [
+    globalSearchValue,
+    productDetails,
+    selectedCategory,
+    selectedBrand,
+    selectedColor,
+    prices,
+    selectedDiscount,
+    topFilters,
+    currentSelectedFilter,
+  ]);
 
   return (
     <div>

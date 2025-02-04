@@ -1,9 +1,9 @@
-import { Client,Databases,ID } from "appwrite";
+import { Client, Databases, ID } from 'appwrite';
 //import { json } from "stream/consumers";
 
 const client = new Client()
-.setEndpoint("https://cloud.appwrite.io/v1")
-.setProject("676a1d49003bb5132d38");
+  .setEndpoint('https://cloud.appwrite.io/v1')
+  .setProject('676a1d49003bb5132d38');
 
 const databases = new Databases(client);
 
@@ -114,7 +114,7 @@ const databases = new Databases(client);
 //     "676a1ee4001ae452e2df",
 //     ID.unique(),
 //     data
-// ); 
+// );
 
 //  const promise = databases.updateDocument(
 //   "676a1ec4001bf5b712d9", //dabase id
@@ -192,44 +192,72 @@ const databases = new Databases(client);
 //     {
 //         CategoryType:"mens",
 //         discountRange:JSON.stringify([
-//                     { filterName: '10% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '20% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '30% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '40% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '50% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '60% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '70% and above', type: 'DISCOUNT RANGE' },
-//                     { filterName: '80% and above', type: 'DISCOUNT RANGE' },
+//                     { filterName: '10% and above', type: 'Discount' },
+//                     { filterName: '20% and above', type: 'Discount' },
+//                     { filterName: '30% and above', type: 'Discount' },
+//                     { filterName: '40% and above', type: 'Discount' },
+//                     { filterName: '50% and above', type: 'Discount' },
+//                     { filterName: '60% and above', type: 'Discount' },
+//                     { filterName: '70% and above', type: 'Discount' },
+//                     { filterName: '80% and above', type: 'Discount' },
 // ]),
 //     },
 // );
 
-  //  const promise = databases.updateDocument(
-  //     "676a1ec4001bf5b712d9",//DB id
-  //     "676a1ee4001ae452e2df",//collection id
-  //     "677de5d100032d5b630a",    
-  //     {
-  //         CategoryType:"mens",
-  //         Gender:JSON.stringify([
-  //
-  //     ]),
-  //      },
-  //       );
+//  const promise = databases.updateDocument(
+//     "676a1ec4001bf5b712d9",//DB id
+//     "676a1ee4001ae452e2df",//collection id
+//     "677de5d100032d5b630a",
+//     {
+//         CategoryType:"mens",
+//         Gender:JSON.stringify([
+//
+//     ]),
+//      },
+//       );
 
-  // const promise = databases.updateDocument(
-  //   "676a1ec4001bf5b712d9",//DB id
-  //   "676a1ee4001ae452e2df",//collection id
-  //   "677de5d100032d5b630a",    
-  //   {
-  //       CategoryType:"mens",
-  //       productDetails:" ",
-  //   },
-  // );
+// const promise = databases.updateDocument(
+//   "676a1ec4001bf5b712d9",//DB id
+//   "676a1ee4001ae452e2df",//collection id
+//   "677de5d100032d5b630a",
+//   {
+//       CategoryType:"mens",
+//       productDetails:" ",
+//   },
+// );
+
+// const promise = databases.updateDocument(
+//   "676a1ec4001bf5b712d9",//DB id
+//   "676a1ee4001ae452e2df",//collection id
+//   "677de5d100032d5b630a",
+//   {
+//       CategoryType:"mens",
+//       topFilters:JSON.stringify([
+//         { name: 'Bundles', values: ['Bundles', 'Single Styles'],selectedValues:[], },
+//         {
+//           name: 'Country Of Origin',
+//           values: [
+//             'All Countries',
+//             'India',
+//             'USA',
+//             'China',
+//             'Turkey',
+//             'Malaysia',
+//             'Portugal',
+//             'Vietnam',
+//             'Jordan',
+//           ],
+//           selectedValues:[],
+//         },
+//         { name: 'Size', values: ['XS', 'S', 'M', 'L', 'XL'],selectedValues:[], },
+//       ]),
+//   },
+// );
 
 // const promise = databases.updateDocument(
 //     "676a1ec4001bf5b712d9",//DB id
 //     "676a1ee4001ae452e2df",//collection id
-//     "677de5d100032d5b630a",    
+//     "677de5d100032d5b630a",
 //     {
 //         CategoryType:"mens",
 //         productDetails:JSON.stringify([
@@ -243,9 +271,9 @@ const databases = new Databases(client);
 //             discount:10,
 //             Bundles:"single style" ,
 //             countryOfOrigin:"India",
-//             size:"M",  
+//             size:"M",
 //             price:799,
-//             images: ['https://assets.myntassets.com/f_webp,dpr_1.0,q_60,w_210,c_limit,fl_progressive/assets/images/17091614/2022/2/18/779ac019-8b8c-48f7-9c5e-b3e2fe3004b01645166457327-Men-White-Casual-Shirt-5731645166456476-1.jpg', 
+//             images: ['https://assets.myntassets.com/f_webp,dpr_1.0,q_60,w_210,c_limit,fl_progressive/assets/images/17091614/2022/2/18/779ac019-8b8c-48f7-9c5e-b3e2fe3004b01645166457327-Men-White-Casual-Shirt-5731645166456476-1.jpg',
 //                     'https://assets.myntassets.com/f_webp,dpr_2.0,q_60,w_210,c_limit,fl_progressive/assets/images/9162675/2019/12/3/79b2dbb2-f8bf-4fb4-9d74-122f7f7ad8dd1575363062409-HIGHLANDER-Men-White-Slim-Fit-Solid-Casual-Shirt-86115753630-1.jpg'],
 //             rating:4.5,
 //             likes:'3.2k',
@@ -260,7 +288,7 @@ const databases = new Databases(client);
 //               discount:20,
 //               bundles:"single style" ,
 //               countryOfOrigin:"India",
-//               size:"L",               
+//               size:"L",
 //               price:1999,
 //               images: ['https://assets.myntassets.com/f_webp,dpr_2.0,q_60,w_210,c_limit,fl_progressive/assets/images/31361076/2025/1/14/b285f610-c074-46ef-ad91-a328ecd97f5c1736845910243-glitchez-Men-Shirts-8691736845909529-1.jpg',
 //                        'https://assets.myntassets.com/f_webp,dpr_2.0,q_60,w_210,c_limit,fl_progressive/assets/images/21990854/2023/3/1/03f8fda7-2b7e-4355-8fe6-3e0ef81b91fc1677665302445-Roadster-Men-Shirts-9901677665301830-1.jpg'],
@@ -476,7 +504,7 @@ const databases = new Databases(client);
 //     }
 //   );
 
-export {client, databases};
+export { client, databases };
 
 // databases.getDocument("676a1ec4001bf5b712d9","676a1ee4001ae452e2df","676cc1a7001c009ca249")
 // .then((response)=>{

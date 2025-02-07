@@ -1,10 +1,11 @@
 import React from 'react';
 import ProductCategory from './ProductCategory';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { listDocuments } from '../apis/listDocuments';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 //import { setGlobalSearch } from '../Redux/navBarSlice.js';
+import { setProductsDetails } from '../Redux/navBarSlice';
 
 export default function ProductCategoryWrapper() {
   const { name } = useParams<{ name: string }>();
@@ -13,11 +14,11 @@ export default function ProductCategoryWrapper() {
   //we are fetchingData and storing in "productDetails"(orginal array)
   const [productDetails, setProductDetails] = React.useState<any[]>([]);
 
-  //for storing searchValues
+  //for storing searchValues [it is also filtering for sortBy(dropDown) also ]
   const [searchedProductDetails, setSearchedProductDetails] = React.useState<
     any[]
   >([]);
-  // console.log(searchedProductDetails, 'searchedProductDetails');
+  //console.log(searchedProductDetails, 'searchedProductDetails');
 
   //getting search value from redux
   const globalSearchValue = useSelector(
@@ -44,10 +45,18 @@ export default function ProductCategoryWrapper() {
   );
 
   const topFilters = useSelector((state: any) => state.navBarSlice.topFilters);
+  console.log(topFilters, 'topFilters');
 
   const currentSelectedFilter = useSelector(
     (state: any) => state.navBarSlice.currentTopFilterSelected
   );
+  console.log(currentSelectedFilter, 'currentSelectedFilter');
+
+  const selectedSortValue = useSelector(
+    (state: any) => state.navBarSlice.selectedSortValue
+  );
+
+  const dispatch = useDispatch();
 
   //fetch products from dataBase
   useEffect(() => {
@@ -62,12 +71,29 @@ export default function ProductCategoryWrapper() {
       );
       //console.log(details, 'productDetails');
       setProductDetails(details?.productDetails);
+      dispatch(setProductsDetails(details?.productDetails));
     }
     fetchDetails();
   }, []); //if "name" changes run the function we have to give as dependency
 
-  //it runs when component mounts,when updates,when component unmount
-  //search functionality //selectedCategory - shirt,jeans
+  function handleSortProducts(filteredProducts: any) {
+    console.log(
+      `selectedSortValue.name inside handleSortProducts = ${selectedSortValue.name}`
+    );
+    switch (selectedSortValue.name) {
+      case 'Price:Low to High':
+        return filteredProducts.sort((a: any, b: any) => a.price - b.price);
+      case 'Price:High to Low':
+        return filteredProducts.sort((a: any, b: any) => b.price - a.price);
+      case 'Popularity': //we are doing using rating
+        return filteredProducts.sort((a: any, b: any) => b.rating - a.rating);
+      default:
+        return filteredProducts;
+    }
+  }
+
+  //useEffect runs when component mounts,when updates,when component unmount
+  //search functionality       //selectedCategory - shirt,jeans
   useEffect(() => {
     let categoryName = selectedCategory.map((category: any) =>
       category.filterName?.toLowerCase()
@@ -82,7 +108,7 @@ export default function ProductCategoryWrapper() {
       discount.filterName?.toLowerCase()
     );
     //console.log(selectedDiscountValue, 'DiscountRangeFromRedux');
-    //console.log(productDetails, 'productDetails before filtering');
+    console.log(productDetails, 'productDetails before filtering');
     //priceString - Rs. 7000 To Rs. 3400 [0-RS.,1-7000,2-To,3-Rs.,4-3400]index
     let pricesString = prices.filterName; //prices.filterName = 0 to 0
     //let pricesString = prices?.filterName ||'';//if filterName is undefined or not a string it throws error so
@@ -90,7 +116,9 @@ export default function ProductCategoryWrapper() {
     if (pricesString?.length > 0) {
       [min, max] = [pricesString.split('')[1], pricesString.split('')[4]];
     }
+
     let filteredProducts = productDetails
+
       //?(optionalParameter) - indicates if product is not null or undefined thenOnly proceed.
       ?.filter((product: any) => {
         //filter by category
@@ -141,10 +169,9 @@ export default function ProductCategoryWrapper() {
         } else if (selectedDiscountValue.length === 0) {
           return product;
         }
-      })
-      //filter for topFilters for Ages
+      }) //filter for topFilters for Ages,bundles,size,coo
       // .filter((product) => {
-      //   console.log(product,"topFilters product");
+      //   console.log(product, 'topFilters product');
       //   // ['3-9'] ---> "3-9" ===> [3,9]
       //   if (currentSelectedFilter === null) return product;
       //   if (topFilters[currentSelectedFilter].selectedValues.length === 0)
@@ -156,7 +183,7 @@ export default function ProductCategoryWrapper() {
       //   let [min, max] = [parseInt(selectedAges[0]), parseInt(selectedAges[1])];
       //   if (productAge && min >= productAge[0] && min <= productAge[1]) {
       //     return product;
-      //   } else if (productAge && max >= productAge[0] && max <= productAge[1]) {
+      //   } else if ( max >= productAge[0] && max <= productAge[1]) {
       //     return product;
       //   } else if (selectedAges.length === 0) {
       //     return product;
@@ -168,9 +195,9 @@ export default function ProductCategoryWrapper() {
           .toLowerCase()
           .includes(globalSearchValue?.toLowerCase());
       });
+    const sortedValues = handleSortProducts(filteredProducts);
     console.log(filteredProducts, 'filteredProducts after filtering');
-
-    setSearchedProductDetails(filteredProducts);
+    setSearchedProductDetails(sortedValues);
   }, [
     globalSearchValue,
     productDetails,
@@ -181,6 +208,7 @@ export default function ProductCategoryWrapper() {
     selectedDiscount,
     topFilters,
     currentSelectedFilter,
+    selectedSortValue,
   ]);
 
   return (

@@ -19,6 +19,7 @@ import ProtectRouter from './components/ProtectRouter'
 import Login from './components/Login';
 import ProductCategory from './components/ProductCategory';
 import ProductCategoryWrapper from './components/ProductCategoryWrapper';
+import WishListedItems from './components/WishListedItems';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
         path: "/category/:name",
         element:<ProductCategoryWrapper/>,
        },
+       {
+        path:"/wishlist",
+        element:<ProtectRouter>{<WishListedItems/>}</ProtectRouter>,
+       }
      ],
   },
   {

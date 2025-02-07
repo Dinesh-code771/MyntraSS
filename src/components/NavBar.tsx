@@ -7,7 +7,7 @@ import { FaRegUser } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMenuButtonClicked, setGlobalSearch } from '../Redux/navBarSlice.js';
 import SearchBar from './SearchBar';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import { MdLogout } from 'react-icons/md';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -15,6 +15,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 export default function NavBar() {
   // We are taking logout method from useAuth0 hook
   const { logout } = useAuth0();
+
+  const navigate = useNavigate();
 
   const isMenuBarOpen = useSelector(
     (state: any) => state.navBarSlice.isMenuButtonClicked
@@ -105,7 +107,7 @@ export default function NavBar() {
               </p>
             </div>
             <div className="flex-col  cursor-pointer items-center">
-              <FaRegHeart size={20} style={{ marginLeft: '0.5rem' }} />
+              <FaRegHeart onClick={() => navigate("/wishlist")} size={20} style={{ marginLeft: '0.5rem' }} />
               <p className="hidden md:inline font-bold text-xs mt-[0.2rem]">
                 Wishlist
               </p>

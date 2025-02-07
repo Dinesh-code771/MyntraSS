@@ -12,9 +12,9 @@ export async function listDocuments(
     const response = await databases.listDocuments(databaseId, collectionId, [
       Query.equal(columnName, value),
     ]);
-    console.log(
-      `columnName = ${columnName} , value = ${value} and getThisDetails = ${JSON.stringify(getThisDetails)}`
-    );
+    // console.log(
+    //   `columnName = ${columnName} , value = ${value} and getThisDetails = ${JSON.stringify(getThisDetails)}`
+    // );
     const { documents } = response;
     let details = {};
     for (let i = 0; i < getThisDetails.length; i++) {

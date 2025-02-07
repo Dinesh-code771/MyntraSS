@@ -18,15 +18,17 @@ import PCDropDown from './PCDropDown';
 import { listDocuments } from '../apis/listDocuments';
 import { useParams } from 'react-router-dom';
 import { insertDataIntoDocument } from '../apis/insertDataIntoDocument';
-import { insertPerticularColumn } from '../apis/insertPerticularColumn';
+import { insertParticularColumn } from '../apis/insertParticularColumn';
 import parse from 'html-react-parser';
 import {
   setTopFilters,
   setCurrentTopFilterSelected,
 } from '../Redux/navBarSlice';
+import { setWishList } from "../Redux/wishListSlice";
 
 type ProductCategoryPropsType = {
   productDetails: {
+    id: number;
     title: string;
     description: string;
     price: number;
@@ -50,6 +52,7 @@ export default function ProductCategory({
   //const [topFilters, setTopFilters] = React.useState([]);
   //here we get[bundles,countryOfOrigin,size]
   const topFilters = useSelector((state: any) => state.navBarSlice.topFilters);
+  //console.log(topFilters,"topFilters");
   const currentSelected = useSelector(
     (state: any) => state.navBarSlice.currentTopFilterSelected
   );
@@ -197,7 +200,7 @@ export default function ProductCategory({
     //console.log(name,"name");
     let newValue = name?.split(' '); //gap is mandatory
     setValues([newValue[1], newValue[newValue.length - 1]]);
-    console.log(newValue, 'newValue');
+    //console.log(newValue, 'newValue');
   }, [allFilterState.prices]);
 
   //for getting values as 1,000 in slider
@@ -231,6 +234,7 @@ export default function ProductCategory({
           'Gender',
           'selectedFilters',
           'topFilters',
+          'wishListItems',
         ]
       ); //this names should match with DB attributes
       setFilterDetails(details); //Original details it won't change it has all values/details from D.B
@@ -239,6 +243,7 @@ export default function ProductCategory({
         searchFilteredCategories: details?.categories,
       });
       dispatch(setTopFilters(details.topFilters));
+      dispatch(setWishList(details.wishListItems ? details.wishListItems : []));
       console.log(details, 'details');
     }
     fetchDetails();
@@ -283,15 +288,23 @@ export default function ProductCategory({
 
   //if you add/remove data[checkboxes] we have to update in DB same as above we did for topFilters
   async function updateDataInServerForTopFilter(value: any, index: number) {
-    console.log(value, 'value', index, 'index');
-    const res = await insertPerticularColumn(
+    console.log(
+      value,
+      'value',
+      index,
+      'index',
+      'inside updateDataInServerForTopFilter'
+    );
+    const res = await insertParticularColumn(
       { value: value, index: index },
       '676a1ec4001bf5b712d9',
       '676a1ee4001ae452e2df',
       'CategoryType',
       name,
-      'topFilters'
+      'topFilters',
+      true,
     );
+    //console.log(refetch, 'refetch_updateDataInServerForTopFilter');
     setRefetch(!refetch);
   }
 
@@ -318,7 +331,7 @@ export default function ProductCategory({
           ...dispatchRes.payload.selectedFilters,
           params: allFilterState.params,
         });
-        console.log(allFilterState, 'allFilterState');
+        //console.log(allFilterState, 'allFilterState');
       }
     }
     updateDataInServer();
@@ -619,13 +632,13 @@ export default function ProductCategory({
                   <PCDropDown
                     title={'Sort By:'}
                     values={[
-                      { id: 0, name: 'Recommended' },
-                      { id: 1, name: "What's New" },
-                      { id: 2, name: 'Popularity' },
-                      { id: 3, name: 'Better Discount' },
-                      { id: 4, name: 'Price:High to Low' },
-                      { id: 5, name: 'Price:Low to High' },
-                      { id: 6, name: 'Customer Rating' },
+                      { id: 352623, name: 'Recommended' },
+                      // { id: 352624, name: "What's New" },
+                      { id: 352625, name: 'Popularity' },
+                      // { id: 352626, name: 'Better Discount' },
+                      { id: 352627, name: 'Price:High to Low' },
+                      { id: 352628, name: 'Price:Low to High' },
+                      // { id: 352629, name: 'Customer Rating' },
                     ]}
                   />
                 </div>
@@ -713,6 +726,7 @@ export default function ProductCategory({
                 {productDetails?.map((product, index) => {
                   return (
                     <ProductCard
+                      id={product.id}
                       key={index}
                       title={product.title}
                       description={product.description}

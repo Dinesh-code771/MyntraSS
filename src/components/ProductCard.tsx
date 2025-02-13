@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
-import { addToWishList } from '../Redux/wishListSlice';
+import { addToWishList,resetWishList,setRefetch } from '../Redux/wishListSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { insertParticularColumn } from '../apis/insertParticularColumn';
 import { useParams } from 'react-router-dom';
 import { GoStarFill } from 'react-icons/go';
+import { databases } from "../apis/appWrite.js";
+import { Query } from "appwrite";
+import fetchDataFromCollection from "../apis/fetchDataFromCollection";
+import updateDocument from "../apis/updateDocument";
 
 export default function ProductCard({
   id,
@@ -15,7 +19,8 @@ export default function ProductCard({
   size,
   rating,
   likes,
-  isWishListItem = false, //there should be a condition to check whether it is wishList item on productCard
+  isWishListItem = false, // condition to check whether it is wishListItem/productCard as we have 2 stylings as "WishList" : "WishListed"
+  product,
 }: {
   id: number;
   title: string;
@@ -26,12 +31,15 @@ export default function ProductCard({
   rating: number;
   likes?: string;
   isWishListItem?: boolean;
+  product: any;
 }) {
   const [currentImage, setCurrentImage] = React.useState(0); //for images
   const [isHovered, setIsHovered] = React.useState(false);
   const dispatch = useDispatch();
   const { name } = useParams<{ name: string }>();
-  const wishList = useSelector((state: any) => state.wishListSlice.wishList);
+  //const wishList = useSelector((state: any) => state.wishListSlice.wishList);
+  const [wishListItems, setWishListItems] = React.useState<any[]>([]);
+  const refetch = useSelector((state: any) => state.wishListSlice.refetch);
 
   //setInterval callback fun updates the state to track which image is displayed in carousel
   //clearInterval(cleanup fun)called when component unmounts or before useEffect re-runs
@@ -42,37 +50,71 @@ export default function ProductCard({
         setCurrentImage((prev) => (prev + 1) % images.length);
       }, 2000);
     }
-    return () => clearInterval(interval); //it stops the timer
+    return () => clearInterval(interval); //it stops the timer9for the 1st time images change & stop
   }, [isHovered]);
+ 
+  async function fetchAndUpdateData(
+    product: any,
+    isRemove = false //if you want to remove product
+  ) {
+    //fetch data from server & update data in server everyTime it run's 
+    let items = await fetchDataFromCollection(
+      "676a1ec4001bf5b712d9",
+      "67a9650e00254ea62e60",
+      "67a966630010d16c0e61",
+      "$id",
+      "wishtListProducts"
+    );
+    if (isRemove) {
+      items = items.filter((item: any) => item.id !== product.id); //removing
+    }
+    // update data in server
+    const res = await updateDocument(
+      "676a1ec4001bf5b712d9",
+      "67a9650e00254ea62e60",
+      "67a966630010d16c0e61",
+      "wishtListProducts",
+      isRemove ? [...items] : [...items, product]
+    );
 
-  function handleWishList(id: number) {
-    //onClick we have to send whole productCard so instead of this we send "title" as title is unique
-    //when we selected 1 item it will save in wishList so
-    if (wishList.includes(id)) {
+    //update state
+    isRemove ? setWishListItems(items) : setWishListItems([...items, product]);
+    if (isRemove) {
+      dispatch(setRefetch(!refetch));//refetching again
+    }
+    return res;
+  }
+
+  //Adding wishListItems in LocalStorage
+  function handleWishList(product: any) {
+    //onClick we have to send whole productCard so we gave "id"
+    //when we selected 1 item it will save in wishList & no duplicates allowed
+    if (wishListItems.includes(id)) {
       return;
     } //we are disabling the button because it already added to wishList
     //console.log('clicked');
-    dispatch(addToWishList(id));
-    //console.log(wishList, 'wishList');
+    //dispatch(addToWishList(id));
+    fetchAndUpdateData(product);
   }
 
-  //update wishListItems in DB
+  function handleRemove(product: any) {
+    fetchAndUpdateData(product, true);//isRemove-true
+  }
+
+  //fetch items only once & store in useState "WishListItems"
   useEffect(() => {
-    async function updateDataInServerForTopFilter(data: any) {
-      const res = await insertParticularColumn(
-        data,
-        '676a1ec4001bf5b712d9',
-        '676a1ee4001ae452e2df',
-        'CategoryType',
-        name,
-        'wishListItems',
-        false
+    async function fetchItems() {
+      const data = await fetchDataFromCollection(
+        "676a1ec4001bf5b712d9",
+        "67a9650e00254ea62e60",
+        "67a966630010d16c0e61",
+        "$id",
+        "wishtListProducts"
       );
-      return res;
+      setWishListItems(data);
     }
-    if (!name) return;
-    updateDataInServerForTopFilter(wishList);
-  }, [wishList]);
+    fetchItems();
+  }, []);
 
   return (
     <div
@@ -131,20 +173,21 @@ export default function ProductCard({
               <>
                 <div
                   className={`wishList cursor-pointer mt-2 ${
-                    wishList.includes(id) ? 'bg-[lightGrey]' : 'bg-white'
+                    wishListItems.map((item) => item.id).includes(id) ? 'bg-[lightGrey]' : 'bg-white'
                   } flex justify-center gap-2 items-center border py-2  rounded-md`}
                 >
-                  { wishList.includes(id) ? (
+                  {wishListItems.includes(id) ? (
                     <FaHeart
                       size={15}
-                      onClick={() => handleWishList(id)}
+                      onClick={() => handleWishList(product)}
                       color={'red'}
                     />
                   ) : (
-                    <FaRegHeart size={15} onClick={() => handleWishList(id)} />
+                    <FaRegHeart size={15} onClick={() => handleWishList(product)} />
                   )}
                   <p className="font-bold uppercase text-sm text-[#282C3F] ">
-                    { wishList.includes(id) ? 'WishListed' : 'WISHLIST'}
+                    {/* //converting product to id & comparing */}
+                    {wishListItems.map((item) => item.id).includes(id) ? 'WishListed' : 'WISHLIST'}
                   </p>
                 </div>
                 <div className="size ">
@@ -174,7 +217,8 @@ export default function ProductCard({
           </div>
         </div>
         <div className="cross cursor-pointer absolute top-2 right-2">
-          <button className="text-xs bg-[lightgrey] py-2 px-3 rounded-full">
+          <button onClick={() => handleRemove(product)}
+          className="text-xs bg-[lightgrey] py-2 px-3 rounded-full">
             X
           </button>
         </div>

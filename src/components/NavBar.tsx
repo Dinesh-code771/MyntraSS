@@ -7,9 +7,10 @@ import { FaRegUser } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { setMenuButtonClicked, setGlobalSearch } from '../Redux/navBarSlice.js';
 import SearchBar from './SearchBar';
-import { Link , useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { MdLogout } from 'react-icons/md';
 import { useAuth0 } from '@auth0/auth0-react';
+import { resetWishList } from '../Redux/wishListSlice.js';
 
 //const NavBar: React.FC  = () => {
 export default function NavBar() {
@@ -107,7 +108,14 @@ export default function NavBar() {
               </p>
             </div>
             <div className="flex-col  cursor-pointer items-center">
-              <FaRegHeart onClick={() => navigate("/wishlist")} size={20} style={{ marginLeft: '0.5rem' }} />
+              <FaRegHeart
+                onClick={() =>{
+                   navigate('/wishlist');
+                   window.location.reload();  //the current webPage reload(refresh)"we are making local state empty"
+                  }}
+                size={20}
+                style={{ marginLeft: '0.5rem' }}
+              />
               <p className="hidden md:inline font-bold text-xs mt-[0.2rem]">
                 Wishlist
               </p>
@@ -129,5 +137,3 @@ export default function NavBar() {
     </nav>
   );
 }
-
-//export default NavBar;

@@ -43,6 +43,7 @@ type ProductCategoryPropsType = {
 export default function ProductCategory({
   productDetails,
 }: ProductCategoryPropsType) {
+
   //for slider(price)
   const [values, setValues] = React.useState<number[]>([0, 0]);
 
@@ -77,7 +78,6 @@ export default function ProductCategory({
     searchFilteredCategories: [],
     searchFilteredBrands: [],
   });
-
   const [categorySearch, setCategorySearch] = React.useState<string>('');
   const [brandSearch, setBrandSearch] = React.useState('');
 
@@ -105,7 +105,6 @@ export default function ProductCategory({
   // ];
 
   const dispatch = useDispatch();
-
   const { name } = useParams<{ name: string }>();
 
   //we will get whole obj from initialState(ReduxStore)
@@ -193,7 +192,7 @@ export default function ProductCategory({
   }
 
   //in redux when it is fetching(&storing) it takes time so useEffect run so giving empty obj is notCorrect that's why we gave if condition
-  useEffect(() => {
+  useEffect(() => {   
     //console.log('&&&&&&&&&&' + allFilterState.prices);
     if (!Object.keys(allFilterState.prices).length) return; //if obj.keys=empty return(exit)
     let name = allFilterState.prices?.filterName;
@@ -231,10 +230,9 @@ export default function ProductCategory({
           'categories',
           'colors',
           'discountRange',
-          'Gender',
+          // 'Gender',
           'selectedFilters',
           'topFilters',
-          'wishListItems',
         ]
       ); //this names should match with DB attributes
       setFilterDetails(details); //Original details it won't change it has all values/details from D.B
@@ -242,9 +240,8 @@ export default function ProductCategory({
         searchFilteredBrands: details?.brands,
         searchFilteredCategories: details?.categories,
       });
-      dispatch(setTopFilters(details.topFilters));
-      dispatch(setWishList(details.wishListItems ? details.wishListItems : []));
-      console.log(details, 'details');
+      dispatch(setTopFilters(details?.topFilters));
+      //console.log(details, 'details');
     }
     fetchDetails();
   }, [refetch]);
@@ -288,11 +285,7 @@ export default function ProductCategory({
 
   //if you add/remove data[checkboxes] we have to update in DB same as above we did for topFilters
   async function updateDataInServerForTopFilter(value: any, index: number) {
-    console.log(
-      value,
-      'value',
-      index,
-      'index',
+    console.log(value,'value',index,'index',
       'inside updateDataInServerForTopFilter'
     );
     const res = await insertParticularColumn(
@@ -734,6 +727,7 @@ export default function ProductCategory({
                       images={product.images}
                       rating={product.rating}
                       likes={product.likes}
+                      product={product}
                     />
                   );
                 })}

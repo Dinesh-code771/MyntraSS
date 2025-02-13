@@ -26,23 +26,11 @@ export default function ProductCategoryWrapper() {
   );
   //console.log(globalSearchValue, 'globalSearchValue');
 
-  const selectedCategory = useSelector(
-    (state: any) => state.filterSlice.Categorie || []
-  );
-
-  const selectedBrand = useSelector(
-    (state: any) => state.filterSlice.Brand || []
-  );
-
+  const selectedCategory = useSelector((state: any) => state.filterSlice.Categorie || []);
+  const selectedBrand = useSelector((state: any) => state.filterSlice.Brand || []);
   const prices = useSelector((state: any) => state.filterSlice.prices);
-
-  const selectedColor = useSelector(
-    (state: any) => state.filterSlice.Colors || []
-  );
-
-  const selectedDiscount = useSelector(
-    (state: any) => state.filterSlice.Discount || []
-  );
+  const selectedColor = useSelector((state: any) => state.filterSlice.Colors || []);
+  const selectedDiscount = useSelector((state: any) => state.filterSlice.Discount || []);
 
   const topFilters = useSelector((state: any) => state.navBarSlice.topFilters);
   console.log(topFilters, 'topFilters');
@@ -50,7 +38,7 @@ export default function ProductCategoryWrapper() {
   const currentSelectedFilter = useSelector(
     (state: any) => state.navBarSlice.currentTopFilterSelected
   );
-  console.log(currentSelectedFilter, 'currentSelectedFilter');
+  //console.log(currentSelectedFilter, 'currentSelectedFilter');
 
   const selectedSortValue = useSelector(
     (state: any) => state.navBarSlice.selectedSortValue
@@ -107,17 +95,20 @@ export default function ProductCategoryWrapper() {
     let selectedDiscountValue = selectedDiscount.map((discount: any) =>
       discount.filterName?.toLowerCase()
     );
+    let topFilterNames = topFilters?.map((filter:any)=>filter.filterName?.toLowerCase());
+    console.log(topFilterNames,"topFilterNames");
+    
     //console.log(selectedDiscountValue, 'DiscountRangeFromRedux');
     console.log(productDetails, 'productDetails before filtering');
     //priceString - Rs. 7000 To Rs. 3400 [0-RS.,1-7000,2-To,3-Rs.,4-3400]index
-    let pricesString = prices.filterName; //prices.filterName = 0 to 0
+    let pricesString = prices?.filterName; //prices.filterName = 0 to 0
     //let pricesString = prices?.filterName ||'';//if filterName is undefined or not a string it throws error so
     let [min, max] = ['0', '0'];
     if (pricesString?.length > 0) {
       [min, max] = [pricesString.split('')[1], pricesString.split('')[4]];
     }
 
-    let filteredProducts = productDetails
+    let filteredProducts = productDetails //filter by category
 
       //?(optionalParameter) - indicates if product is not null or undefined thenOnly proceed.
       ?.filter((product: any) => {
@@ -170,27 +161,27 @@ export default function ProductCategoryWrapper() {
           return product;
         }
       }) //filter for topFilters for Ages,bundles,size,coo
-      // .filter((product) => {
-      //   console.log(product, 'topFilters product');
-      //   // ['3-9'] ---> "3-9" ===> [3,9]
-      //   if (currentSelectedFilter === null) return product;
-      //   if (topFilters[currentSelectedFilter].selectedValues.length === 0)
-      //     return product;
-      //   let selectedAges = topFilters[currentSelectedFilter].selectedValues
-      //     .join()
-      //     .split('-');
-      //   let productAge = product.age;
-      //   let [min, max] = [parseInt(selectedAges[0]), parseInt(selectedAges[1])];
-      //   if (productAge && min >= productAge[0] && min <= productAge[1]) {
-      //     return product;
-      //   } else if ( max >= productAge[0] && max <= productAge[1]) {
-      //     return product;
-      //   } else if (selectedAges.length === 0) {
-      //     return product;
-      //   }
-      // })
+      .filter((product) => {
+        console.log(product, 'topFilters product');
+        // ['3-9'] ---> "3-9" ===> [3,9]
+        if (currentSelectedFilter === null) return product;
+        if (topFilters[currentSelectedFilter].selectedValues.length === 0)
+          return product;
+        let selectedAges = topFilters[currentSelectedFilter].selectedValues
+          .join()
+          .split('-');
+        if (topFilters[currentSelectedFilter].name != "Ages") return product;
+        let productAge = product.age;
+        let [min, max] = [parseInt(selectedAges[0]), parseInt(selectedAges[1])];
+        if (productAge && min >= productAge[0] && min <= productAge[1]) {
+          return product;
+        } else if ( max >= productAge[0] && max <= productAge[1]) {
+          return product;
+        } else if (selectedAges.length === 0) {
+          return product;
+        }
+      }) //search by title
       ?.filter((product: any) => {
-        //search by title
         return product.title
           .toLowerCase()
           .includes(globalSearchValue?.toLowerCase());

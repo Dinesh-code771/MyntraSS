@@ -10,9 +10,8 @@ export async function insertDataIntoDocument(
 ){
     try{
         //getting document using colName and val
-        const queryResponse = await databases.listDocuments(databaseId,collectionId, [
-            Query.equal(columnName, value),
-        ]);
+        const queryResponse = await databases.listDocuments(databaseId,collectionId, 
+            [Query.equal(columnName, value)]);
        
         if (queryResponse.documents.length === 0){
             console.log("No documents found matching the query.");

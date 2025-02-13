@@ -509,6 +509,16 @@ const databases = new Databases(client);
 //     "677de5d100032d5b630a",
 //     {
 //       CategoryType: "mens",
+//       wishListItems:"",
+//      }
+//   );
+
+// const promise = databases.updateDocument(
+//     "676a1ec4001bf5b712d9", //dabase id
+//     "676a1ee4001ae452e2df", // collectoin id
+//     "677de5d100032d5b630a",
+//     {
+//       CategoryType: "mens",
 //       selectedFilters: JSON.stringify({
 //         Categorie: [],
 //         Brand: [],

@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         element:<HomeSection/>,
       },
       {
-       path: "mens",
+       path: "men",
        element:<Men/>,
       },
       {
@@ -87,20 +87,20 @@ const router = createBrowserRouter([
 ]); 
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <Auth0Provider
       domain="dev-x7d5hfyx7m21nidn.us.auth0.com"
       clientId='0KZhAN7tPP1VezMLXWPhbPzoIFbPzZXm'
       authorizationParams={{
-        redirect_uri:window.location.origin,
+        redirect_uri: window.location.origin,
       }}
       >
       {/* <App /> */}
       <RouterProvider router={router}/>
       </Auth0Provider>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

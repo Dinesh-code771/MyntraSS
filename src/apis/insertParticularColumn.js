@@ -8,7 +8,7 @@ export async function insertParticularColumn(
   columnName,
   value,
   key,
-  isTopFilter = true //we gave this condition because this component can work for both topFilters & wishList also
+  isTopFilter = true //we gave this condition because this component works for both topFilters & wishList 
 ) {
   try {
     //CN-cateroryType,Value-mens,key-WishListitems,data-[]
@@ -62,7 +62,7 @@ export async function insertParticularColumn(
       }
     );
     return response;
-    console.log(response);
+    //console.log(response);
   } catch (error) {
     console.error(error);
   }

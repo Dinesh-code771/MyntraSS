@@ -285,9 +285,9 @@ export default function ProductCategory({
 
   //if you add/remove data[checkboxes] we have to update in DB same as above we did for topFilters
   async function updateDataInServerForTopFilter(value: any, index: number) {
-    console.log(value,'value',index,'index',
-      'inside updateDataInServerForTopFilter'
-    );
+    // console.log(value,'value',index,'index',
+    //   'inside updateDataInServerForTopFilter'
+    // );
     const res = await insertParticularColumn(
       { value: value, index: index },
       '676a1ec4001bf5b712d9',

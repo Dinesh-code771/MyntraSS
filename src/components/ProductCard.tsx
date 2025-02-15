@@ -3,7 +3,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa6';
 import { addToWishList,resetWishList,setRefetch } from '../Redux/wishListSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { insertParticularColumn } from '../apis/insertParticularColumn';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { GoStarFill } from 'react-icons/go';
 import { databases } from "../apis/appWrite.js";
 import { Query } from "appwrite";
@@ -40,7 +40,8 @@ export default function ProductCard({
   //const wishList = useSelector((state: any) => state.wishListSlice.wishList);
   const [wishListItems, setWishListItems] = React.useState<any[]>([]);
   const refetch = useSelector((state: any) => state.wishListSlice.refetch);
-
+  const navigate = useNavigate();
+  
   //setInterval callback fun updates the state to track which image is displayed in carousel
   //clearInterval(cleanup fun)called when component unmounts or before useEffect re-runs
   useEffect(() => {
@@ -119,13 +120,16 @@ export default function ProductCard({
   return (
     <div
       className={`p-2 ${!isWishListItem ? 'hover:shadow-lg' : 'border relative'}`}
-      onClick={() => {
+      onMouseEnter={() => {
         if (isWishListItem) return; //if it is wishlist item return
         setIsHovered(true);
       }}
       onMouseLeave={() => {
         setIsHovered(false);
         setCurrentImage(0); //for get 1st image
+      }}
+      onClick={() => {
+        navigate(`/category/${name}/${id}`);
       }}
     >
       <div className="w-auto ">
@@ -143,7 +147,7 @@ export default function ProductCard({
           {!isWishListItem && !isHovered && (
             <div className="rating absolute flex gap-2 bottom-1 left-1 bg-[#D4D4D4] px-1 py-1.5 rounded">
               <p className="font-bold text-xs flex text-black ">
-                {rating} <GoStarFill className="text-sky-400 mx-1 mt-[2px]" /> |{' '}
+                {rating} <GoStarFill className="text-teal-400 mx-1 mt-[2px]" /> |{' '}
               </p>
               <p className="font-bold text-xs text-black">{likes}</p>
             </div>

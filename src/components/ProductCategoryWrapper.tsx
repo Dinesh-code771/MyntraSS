@@ -65,9 +65,9 @@ export default function ProductCategoryWrapper() {
   }, []); //if "name" changes run the function we have to give as dependency
 
   function handleSortProducts(filteredProducts: any) {
-    console.log(
-      `selectedSortValue.name inside handleSortProducts = ${selectedSortValue.name}`
-    );
+    // console.log(
+    //   `selectedSortValue.name inside handleSortProducts = ${selectedSortValue.name}`
+    // );
     switch (selectedSortValue.name) {
       case 'Price:Low to High':
         return filteredProducts.sort((a: any, b: any) => a.price - b.price);
@@ -95,7 +95,7 @@ export default function ProductCategoryWrapper() {
     let selectedDiscountValue = selectedDiscount.map((discount: any) =>
       discount.filterName?.toLowerCase()
     );
-    let topFilterNames = topFilters?.map((filter:any)=>filter.filterName?.toLowerCase());
+    let topFilterNames = topFilters?.map((filter:any)=>filter.name?.toLowerCase());
     console.log(topFilterNames,"topFilterNames");
     
     //console.log(selectedDiscountValue, 'DiscountRangeFromRedux');
@@ -161,9 +161,9 @@ export default function ProductCategoryWrapper() {
           return product;
         }
       }) //filter for topFilters for Ages,bundles,size,coo
-      .filter((product) => {
-        console.log(product, 'topFilters product');
-        // ['3-9'] ---> "3-9" ===> [3,9]
+       .filter((product) => {
+      //   console.log(product, 'topFilters product');
+      //   // ['3-9'] ---> "3-9" ===> [3,9]
         if (currentSelectedFilter === null) return product;
         if (topFilters[currentSelectedFilter].selectedValues.length === 0)
           return product;
@@ -180,7 +180,26 @@ export default function ProductCategoryWrapper() {
         } else if (selectedAges.length === 0) {
           return product;
         }
-      }) //search by title
+
+      //filter for only mens,women(works for all selectedFilters)
+      // for(let filterName of topFilterNames){
+      //   console.log(topFilterNames[currentSelectedFilter],"currentSelectedFilter");
+      //   if(topFilters[currentSelectedFilter]?.selectedValues.length === 0) return;
+      //   if(filterName === "Ages"){
+
+      //   }
+      //   else{
+      //     let searchValues = topFilters[currentSelectedFilter]?.selectedValues;
+      //     console.log(searchValues,"searchValues");
+      //     filteredProducts = filteredProducts.filter((product:any)=>{
+      //       return searchValues?.some((value:any)=>product[topFilters[currentSelectedFilter].name
+      //       ?.toLowerCase().split("").join("")]
+      //       ?.toLowerCase().includes(value?.toLowerCase()))
+      //     })
+      //   }
+      // }
+
+       }) //search by title
       ?.filter((product: any) => {
         return product.title
           .toLowerCase()

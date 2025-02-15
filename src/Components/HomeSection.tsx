@@ -90,17 +90,17 @@ export default function HomeSection() {
       <ShopByCategory
         title="Shop By Category"
         images={[
-          { categoryName: "mens-clothing", src: "category1.png" },
-          { categoryName: "Womens-clothing", src: "category2.png" },
-          { categoryName: "Kids-clothing", src: "category4.png" },
-          { categoryName: "ethical-clothing", src: "category5.png" },
-          { categoryName: "western", src: "category6.png" },
-          { categoryName: "footware", src: "category1.png" },
-          { categoryName: "handbags", src: "category2.png" },
-          { categoryName: "beauty", src: "category3.png" },
-          { categoryName: "Kids-clothing", src: "category4.png" },
-          { categoryName: "beauty", src: "category5.png" },
-          { categoryName: "mens", src: "category6.png" },
+          { categoryName: "Women", src: "category1.png" },
+          { categoryName: "mens", src: "category2.png" },
+          { categoryName: "Women", src: "category4.png" },
+          { categoryName: "Women", src: "category5.png" },
+          { categoryName: "kids", src: "category6.png" },
+          { categoryName: "Women", src: "category1.png" },
+          { categoryName: "mens", src: "category2.png" },
+          { categoryName: "Mens", src: "category3.png" },
+          { categoryName: "Women", src: "category4.png" },
+          { categoryName: "Women", src: "category5.png" },
+          { categoryName: "kids", src: "category6.png" },
         ]}
       />
     </div>

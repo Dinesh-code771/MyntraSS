@@ -18,8 +18,9 @@ import Login from "./Components/Login";
 import HomeSection from "./Components/HomeSection";
 import ProductCategory from "./Components/ProductCategory";
 import { store } from "./Redux/store";
+import WishList from "./Components/Wishlist";
+import SelectedProduct from "./Components/SelectedProduct";
 // import reportWebVitals from "./reportWebVitals.js";
-
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -58,6 +59,14 @@ const router = createBrowserRouter([
         path: "/Category/:name",
         element: <ProductCategoryWraper />,
       },
+      {
+        path: "/Category/:name/:id",
+        element: < SelectedProduct/>,
+      },
+      {
+        path: "/wishlist",
+        element: <WishList />,
+      },
     ],
   },
   {
@@ -84,7 +93,6 @@ root.render(
         <RouterProvider router={router} />
       </Auth0Provider>
     </Provider>
-    
   </React.StrictMode>
 );
 

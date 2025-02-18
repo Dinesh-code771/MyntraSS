@@ -302,8 +302,8 @@ export default function FilterComponent({
           })}
         </ul>
       </div>
-      {/* Filter Model(footer) */}
-      {/* total -8 if elements are 30 we show 8 */}
+      {/* Filter Model(brand) */}
+      {/* we are showing 1st 8 brands,if we have more 62 brands we gave click option it opens a model */}
       <div className="FilterModel">
         {filterValues?.length > 9 ? (
           <span

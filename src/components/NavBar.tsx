@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MdLogout } from 'react-icons/md';
 import { useAuth0 } from '@auth0/auth0-react';
 import { resetWishList } from '../Redux/wishListSlice.js';
+import SearchWithSuggestion from "./SearchWithSuggestion";
 
 //const NavBar: React.FC  = () => {
 export default function NavBar() {
@@ -93,12 +94,13 @@ export default function NavBar() {
         </div>
 
         <div className="rightWrapper flex-1 md:flex md:items-center md:gap-10 justify-end">
-          <SearchBar
+          {/* <SearchBar
             className="rounded  hidden md:flex   md:w-[60%] lg:w-[80%] xl:w-[35rem] bg-[#f5f5f5]  md:items-center gap-3 px-3 py-1"
             placeholder="Search for products, brands and more"
             onChange={onGlobalSearchChange}
             value={globalSearchValue}
-          />
+          /> */}
+           <SearchWithSuggestion />
 
           <div className="icons flex items-center justify-end gap-5">
             <div className="hidden md:inline flex-col items-center">

@@ -15,7 +15,8 @@ export default function WishListedItems() {
     //fetched whishListItems from DB we are storing here in this useState
     const [wishListItems, setWishListItems] = React.useState<any[]>([]);
     const refetch = useSelector((state: any) => state.wishListSlice.refetch);
-
+   
+    
     //fetch wishList items from database
     useEffect(() => {
       //we are getting using "fetchDataFromCollection" & wrap inside a function

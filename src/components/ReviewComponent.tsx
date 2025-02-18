@@ -13,7 +13,7 @@ export default function ReviewComponent({
   const [dislike, setDislike] = useState(0);
   return (
     <div className='border-t'>
-      <h1 className="font-bold mb-4 text-[#282c3f] text-[20px]">Customer Reviews ( )</h1>
+      <h1 className="font-bold my-4 text-[#282c3f] text-[20px]">Customer Reviews ( )</h1>
       <div className="container flex  gap-2">
         <div className="ratingStart ">
           <div className="ratingStar bg-teal-400 flex gap-1 px-1 rounded mt-1">

@@ -25,6 +25,8 @@ import {
   setCurrentTopFilterSelected,
 } from '../Redux/navBarSlice';
 import { setWishList } from "../Redux/wishListSlice";
+import HeaderRouter from "./HeaderRouter";
+import Pagination from "./Pagination";
 
 type ProductCategoryPropsType = {
   productDetails: {
@@ -82,6 +84,9 @@ export default function ProductCategory({
   const [brandSearch, setBrandSearch] = React.useState('');
 
   const [refetch, setRefetch] = React.useState(false);
+
+  //for pagination
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   //we took static values
   // const topFilters = [
@@ -334,17 +339,29 @@ export default function ProductCategory({
     <div className="h-[100%] w-full">
       <div className="wrapper lg:w-[80%] md:w-auto md:px-1 h-full lg:mx-auto  ">
         <div className="Top-section flex flex-col gap-3 mt-2 p-2 pb-5">
-          <div className="first-line">
-            <p className="text-[#282C3F] text-sm cursor-pointer">
+          <div className="first-line cursor-pointer  text-[#535665] w-[50px]">
+          <HeaderRouter
+          titles={[
+            { title: "Home", link: "" },  
+            { title: name as string, link: `category/${name}` },
+          ]}
+        />
+            {/* <p className="text-[#282C3F] text-sm cursor-pointer">
               Home / Clothing /
               <span className=" text-[#282c3e] font-bold"> Loungewear</span>
-            </p>
+            </p> */}
           </div>
           <div className="second-line">
-            <p className="text-[#282C3F] text-sm">
+          <HeaderRouter
+          titles={[  
+            { title: name as string, link: `category/${name}` },
+           
+          ]}
+        />
+            {/* <p className="text-[#282C3F] text-sm">
               <b> Loungewear</b>
               <span className="text-[#878B94] "> - 39534 items</span>
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="Bottom-section flex  ">
@@ -733,6 +750,12 @@ export default function ProductCategory({
                 })}
               </div>
             </div>
+            <Pagination
+              totalData={productDetails?.length}
+              dataPerPage={5}
+              onPageChange={setCurrentPage}
+              currentPage={currentPage}
+            />
           </div>
         </div>
       </div>

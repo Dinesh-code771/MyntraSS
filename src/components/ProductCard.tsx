@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa6';
-import { addToWishList,resetWishList,setRefetch } from '../Redux/wishListSlice';
+import {
+  addToWishList,
+  resetWishList,
+  setRefetch,
+} from '../Redux/wishListSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { insertParticularColumn } from '../apis/insertParticularColumn';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoStarFill } from 'react-icons/go';
-import { databases } from "../apis/appWrite.js";
-import { Query } from "appwrite";
-import fetchDataFromCollection from "../apis/fetchDataFromCollection";
-import updateDocument from "../apis/updateDocument";
+import { databases } from '../apis/appWrite.js';
+import { Query } from 'appwrite';
+import fetchDataFromCollection from '../apis/fetchDataFromCollection';
+import updateDocument from '../apis/updateDocument';
+
 
 export default function ProductCard({
   id,
@@ -41,7 +46,7 @@ export default function ProductCard({
   const [wishListItems, setWishListItems] = React.useState<any[]>([]);
   const refetch = useSelector((state: any) => state.wishListSlice.refetch);
   const navigate = useNavigate();
-  
+
   //setInterval callback fun updates the state to track which image is displayed in carousel
   //clearInterval(cleanup fun)called when component unmounts or before useEffect re-runs
   useEffect(() => {
@@ -53,35 +58,35 @@ export default function ProductCard({
     }
     return () => clearInterval(interval); //it stops the timer9for the 1st time images change & stop
   }, [isHovered]);
- 
+
   async function fetchAndUpdateData(
     product: any,
     isRemove = false //if you want to remove product
   ) {
-    //fetch data from server & update data in server everyTime it run's 
+    //fetch data from server & update data in server everyTime it run's
     let items = await fetchDataFromCollection(
-      "676a1ec4001bf5b712d9",
-      "67a9650e00254ea62e60",
-      "67a966630010d16c0e61",
-      "$id",
-      "wishtListProducts"
+      '676a1ec4001bf5b712d9',
+      '67a9650e00254ea62e60',
+      '67a966630010d16c0e61',
+      '$id',
+      'wishtListProducts'
     );
     if (isRemove) {
       items = items.filter((item: any) => item.id !== product.id); //removing
     }
     // update data in server
     const res = await updateDocument(
-      "676a1ec4001bf5b712d9",
-      "67a9650e00254ea62e60",
-      "67a966630010d16c0e61",
-      "wishtListProducts",
+      '676a1ec4001bf5b712d9',
+      '67a9650e00254ea62e60',
+      '67a966630010d16c0e61',
+      'wishtListProducts',
       isRemove ? [...items] : [...items, product]
     );
 
     //update state
     isRemove ? setWishListItems(items) : setWishListItems([...items, product]);
     if (isRemove) {
-      dispatch(setRefetch(!refetch));//refetching again
+      dispatch(setRefetch(!refetch)); //refetching again
     }
     return res;
   }
@@ -99,18 +104,18 @@ export default function ProductCard({
   }
 
   function handleRemove(product: any) {
-    fetchAndUpdateData(product, true);//isRemove-true
+    fetchAndUpdateData(product, true); //isRemove-true
   }
 
   //fetch items only once & store in useState "WishListItems"
   useEffect(() => {
     async function fetchItems() {
       const data = await fetchDataFromCollection(
-        "676a1ec4001bf5b712d9",
-        "67a9650e00254ea62e60",
-        "67a966630010d16c0e61",
-        "$id",
-        "wishtListProducts"
+        '676a1ec4001bf5b712d9',
+        '67a9650e00254ea62e60',
+        '67a966630010d16c0e61',
+        '$id',
+        'wishtListProducts'
       );
       setWishListItems(data);
     }
@@ -147,7 +152,8 @@ export default function ProductCard({
           {!isWishListItem && !isHovered && (
             <div className="rating absolute flex gap-2 bottom-1 left-1 bg-[#D4D4D4] px-1 py-1.5 rounded">
               <p className="font-bold text-xs flex text-black ">
-                {rating} <GoStarFill className="text-teal-400 mx-1 mt-[2px]" /> |{' '}
+                {rating} <GoStarFill className="text-teal-400 mx-1 mt-[2px]" />{' '}
+                |{' '}
               </p>
               <p className="font-bold text-xs text-black">{likes}</p>
             </div>
@@ -177,21 +183,35 @@ export default function ProductCard({
               <>
                 <div
                   className={`wishList cursor-pointer mt-2 ${
-                    wishListItems.map((item) => item.id).includes(id) ? 'bg-[lightGrey]' : 'bg-white'
+                    wishListItems.map((item) => item.id).includes(id)
+                      ? 'bg-[lightGrey]'
+                      : 'bg-white'
                   } flex justify-center gap-2 items-center border py-2  rounded-md`}
                 >
                   {wishListItems.includes(id) ? (
+                    //event bubbling(e.stopPropagation) if i click on child(wishListButton) the whole product card is selecting
                     <FaHeart
                       size={15}
-                      onClick={() => handleWishList(product)}
+                      onClick={(e) => {
+                        e.stopPropagation(); 
+                        handleWishList(product);
+                      }}
                       color={'red'}
                     />
                   ) : (
-                    <FaRegHeart size={15} onClick={() => handleWishList(product)} />
+                    <FaRegHeart
+                      size={15}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleWishList(product);
+                      }}
+                    />
                   )}
                   <p className="font-bold uppercase text-sm text-[#282C3F] ">
                     {/* //converting product to id & comparing */}
-                    {wishListItems.map((item) => item.id).includes(id) ? 'WishListed' : 'WISHLIST'}
+                    {wishListItems.map((item) => item.id).includes(id)
+                      ? 'WishListed'
+                      : 'WISHLIST'}
                   </p>
                 </div>
                 <div className="size ">
@@ -208,7 +228,7 @@ export default function ProductCard({
             )}
 
             <p className="text-xs font-bold text-[#282C3F]">{`Rs.${price}`}</p>
-            {/* if it is wishList item then show this style in productCard */}
+            {/* if it is wishList item then show this style in productCard at "wishListPage" */}
             {isWishListItem ? (
               <div className="w-full flex justify-center items-center border-t ">
                 <button className="pt-2 font-semibold text-[#ff3e6c] text-sm">
@@ -221,8 +241,13 @@ export default function ProductCard({
           </div>
         </div>
         <div className="cross cursor-pointer absolute top-2 right-2">
-          <button onClick={() => handleRemove(product)}
-          className="text-xs bg-[lightgrey] py-2 px-3 rounded-full">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRemove(product);
+            }}
+            className="text-xs bg-[lightgrey] py-2 px-3 rounded-full"
+          >
             X
           </button>
         </div>
